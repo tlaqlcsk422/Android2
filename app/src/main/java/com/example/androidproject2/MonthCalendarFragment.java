@@ -1,12 +1,22 @@
 package com.example.androidproject2;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +29,10 @@ public class MonthCalendarFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    int year;
+    int month;
+    int firstDay; //시작 요일
+    int allDay; //한달 일 수
 
     // TODO: Rename and change types of parameters
     private int mParam1;
@@ -56,7 +70,49 @@ public class MonthCalendarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_month_calendar, container, false);
+
+
+        if (year == -1 || month == -1) {//year, month에 넘어온 값이 없으면(-1이면) 현재값 읽어오기
+            year = Calendar.getInstance().get(Calendar.YEAR);
+            month = Calendar.getInstance().get(Calendar.MONTH);
+        }
+
+        //gridView 일 표시
+        String date = (month + 1) + "/" + "01/" + year;
+        String pattern = "MM/dd/yyyy";
+        Date selDate = null;
+        try {
+            selDate = new SimpleDateFormat(pattern).parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(selDate);
+        String test = "실패";
+        if (selDate != null) {
+            test = "성공";
+        }
+        firstDay = c.get(Calendar.DAY_OF_WEEK); //첫째날
+        allDay = c.getActualMaximum(Calendar.DAY_OF_MONTH);//그 달의 마지막 일
+
+        ArrayList<Integer> days = new ArrayList<Integer>();
+
+        for (int i = 1; i < firstDay; i++) {
+            days.add(null);
+        }
+        for (int i = 1; i <= allDay; i++) {
+            days.add(i);
+        }
+
+        DayAdapter adapter = new DayAdapter(getActivity(), days, year, month);
+
+        // 어탭터 연결
+        GridView gridView = (GridView) rootView.findViewById(R.id.gridView);
+        gridView.setAdapter(adapter);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_month_calendar, container, false);
+        return rootView;
     }
+
 }
