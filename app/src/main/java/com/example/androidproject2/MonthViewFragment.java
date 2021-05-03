@@ -65,6 +65,7 @@ public class MonthViewFragment extends Fragment {
         ViewPager2 vpPager = rootView.findViewById(R.id.vpPager);
         FragmentStateAdapter adapter = new MonthCalendarAdapter(this);
         vpPager.setAdapter(adapter);
+        vpPager.setCurrentItem(49);//현재 페이지를 오늘 날짜 position으로 설정
 
         // Inflate the layout for this fragment
         return rootView;

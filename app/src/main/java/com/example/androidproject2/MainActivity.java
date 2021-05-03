@@ -21,10 +21,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    int year;
-    int month;
-    int firstDay; //시작 요일
-    int allDay; //한달 일 수
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.main_container, new MonthViewFragment());
         fragmentTransaction.commit();
+        /*
+        int year = MonthCalendarFragment.getYear();
+        int month = MonthCalendarFragment.getMonth();
+        String appName = year+"년 "+month+"월";
+        setTitle(appName);
+         */
     }
 
     @Override

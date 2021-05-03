@@ -8,6 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
@@ -17,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import static com.example.androidproject2.R.string.app_name;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,6 +69,16 @@ public class MonthCalendarFragment extends Fragment {
             mParam2 = getArguments().getInt(ARG_PARAM2);
         }
     }
+/*
+    public static int getYear() {
+        return year;
+    }
+
+    public static int getMonth() {
+        return month;
+    }
+
+ */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,10 +86,9 @@ public class MonthCalendarFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_month_calendar, container, false);
 
 
-        if (year == -1 || month == -1) {//year, month에 넘어온 값이 없으면(-1이면) 현재값 읽어오기
-            year = Calendar.getInstance().get(Calendar.YEAR);
-            month = Calendar.getInstance().get(Calendar.MONTH);
-        }
+        year = mParam1;
+        month = mParam2;
+
 
         //gridView 일 표시
         String date = (month + 1) + "/" + "01/" + year;
@@ -93,6 +105,7 @@ public class MonthCalendarFragment extends Fragment {
         if (selDate != null) {
             test = "성공";
         }
+
         firstDay = c.get(Calendar.DAY_OF_WEEK); //첫째날
         allDay = c.getActualMaximum(Calendar.DAY_OF_MONTH);//그 달의 마지막 일
 
@@ -105,14 +118,18 @@ public class MonthCalendarFragment extends Fragment {
             days.add(i);
         }
 
+
         DayAdapter adapter = new DayAdapter(getActivity(), days, year, month);
 
         // 어탭터 연결
         GridView gridView = (GridView) rootView.findViewById(R.id.gridView);
         gridView.setAdapter(adapter);
 
+
         // Inflate the layout for this fragment
         return rootView;
     }
+
+
 
 }

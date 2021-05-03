@@ -76,6 +76,7 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         } else {
             dayTv.setText(items.get(position) + "");//String 으로 해야해서 +"" 추가함
 
+            dayTv.setBackgroundColor(Color.WHITE);
             //일요일 빨간색 표시
             if(position % 7 == 0)
                 dayTv.setTextColor(Color.RED);
@@ -84,6 +85,7 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
             if(position % 7 == 6)
                 dayTv.setTextColor(Color.BLUE);
 
+
             //오늘 날짜 받아오기
             Calendar cal = Calendar.getInstance();
             int nowYear = cal.get(Calendar.YEAR);
@@ -91,10 +93,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
             nowMonth++;
             int date = cal.get(Calendar.DATE);
 
-            //달력에 오늘 날짜 표시하기
-            if(nowYear == year && nowMonth == month && date == items.get(position) ){
-                dayTv.setBackgroundColor(Color.YELLOW);
-            }
         }
         Log.d(TAG, items.get(position) + ", "+dayTv.getText());
 
@@ -102,10 +100,14 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "클릭");
+                //다른 포지션 배경색 white로 바꾸기 추가해야됨
                 if (getItem(position) != null) {//null 값일 때 출력 X
+                    dayTv.setBackgroundColor(Color.CYAN);
+
                     print(year + "년" + month + "월" + ((int) getItem(position)) + "일");
-                    Log.d(TAG, year + "년" + month + "월" + ((int)getItem(position)) + "일");
+                    Log.d(TAG, year + "년" + month + "월" + ((int) getItem(position)) + "일");
                 }
+
             }
         });
 
