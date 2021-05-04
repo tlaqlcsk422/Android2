@@ -3,6 +3,8 @@ package com.example.androidproject2;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,14 +30,6 @@ public class WeekViewFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment WeekViewFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static WeekViewFragment newInstance(String param1, String param2) {
         WeekViewFragment fragment = new WeekViewFragment();
@@ -58,7 +52,14 @@ public class WeekViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_week_view, container, false);
+
+        ViewPager2 vpPager = rootView.findViewById(R.id.vpPager);
+        FragmentStateAdapter adapter = new WeekCalendarAdapter(this);
+        vpPager.setAdapter(adapter);
+        vpPager.setCurrentItem(49);//현재 페이지를 오늘 날짜 position으로 설정
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_week_view, container, false);
+        return rootView;
     }
 }
