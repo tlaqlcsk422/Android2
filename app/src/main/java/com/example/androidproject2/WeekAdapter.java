@@ -61,19 +61,14 @@ public class WeekAdapter  extends BaseAdapter implements OnItemClickListener{
     }
 
     @Override
-    public View getView( int position, View View, ViewGroup parent) {
+    public View getView( int position, View view, ViewGroup parent) {
         if (view == null) {
             view = inflater.inflate(R.layout.text_item, parent, false);
             this.view = view;
         }
 
-        Log.d(TAG,"create "+position);
+        //Log.d(TAG,"create "+position);
 
-        Log.d(TAG,"여기까지---------------------------------------------------------");
-
-        for(int i=0;i<items.size();i++) {
-            Log.d(TAG, items.get(i)+"");
-        }
 
         TextView itemTv=view.findViewById(R.id.text);
 
@@ -101,24 +96,29 @@ public class WeekAdapter  extends BaseAdapter implements OnItemClickListener{
 
         }
 
-        Log.d(TAG,position+": "+itemTv.getText()+" check");
-
-        /*itemTv.setOnClickListener(new View.OnClickListener() {
+        itemTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "클릭");
                 //다른 포지션 배경색 white로 바꾸기 추가해야됨
                 if (getItem(position) != null) {//null 값일 때 출력 X
-                    itemTv.setBackgroundColor(Color.CYAN);
+                    //itemTv.setBackgroundColor(Color.CYAN);
 
-                    print(year + "년" + month + "월" + ((int) getItem(position)) + "일");
-                    Log.d(TAG, year + "년" + month + "월" + ((int) getItem(position)) + "일");
+                    if(position%8==0){
+                        if (position!=0) {
+                            int tmpTime=position/8;
+                            print(tmpTime+"시");
+                        }
+                    }
+                    else {
+                        print(year + "년" + month + "월" + getItem(position % 8) + "일");
+                        Log.d(TAG, year + "년" + month + "월" + getItem(position % 8) + "일");
+                    }
                 }
-
             }
-        });*/
+        });
 
-        return View;
+        return view;
     }
 
     void print(String message){

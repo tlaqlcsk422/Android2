@@ -72,7 +72,7 @@ public class WeekCalendarFragment extends Fragment {
         Calendar c = Calendar.getInstance();
         c.set(year,month, date);
 
-        Log.d(TAG,year+"/"+month+"/"+date);
+        Log.d(TAG,year+"/"+(month+1)+"/"+date);
 
         ArrayList<String> items = new ArrayList<String>();
 
@@ -82,6 +82,7 @@ public class WeekCalendarFragment extends Fragment {
             int tempDate= date+i;
             if(tempDate>c.get(Calendar.DAY_OF_WEEK)){
                 tempDate= date+i -c.get(Calendar.DAY_OF_WEEK)+1;
+                Log.d(TAG,year+"/"+(month+1)+"/"+tempDate);
             }
             items.add(tempDate+"");
         }
@@ -104,7 +105,4 @@ public class WeekCalendarFragment extends Fragment {
         // Inflate the layout for this fragment
         return rootView;
     }
-
-
-
 }
