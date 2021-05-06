@@ -4,16 +4,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 
 public class WeekCalendarFragment extends Fragment {
@@ -31,7 +29,9 @@ public class WeekCalendarFragment extends Fragment {
 
     private int year;
     private int month;
-    private int day;
+    private int date;
+
+    private static final String TAG="Week Calendar Fragment";
 
     public WeekCalendarFragment() {
         // Required empty public constructor
@@ -60,38 +60,32 @@ public class WeekCalendarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_month_calendar, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_week_calendar, container, false);
 
 
         year = mParam1;
         month = mParam2;
-        day=mParam3;
+        date =mParam3;
 
         //gridView 일 표시
-        String date = String.format("%d/%d/%d", month + 1, day, year);
-        String pattern = "MM/dd/yyyy";
-        Date selDate = null;
-        try {
-            selDate = new SimpleDateFormat(pattern).parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Calendar c = Calendar.getInstance();
-        c.setTime(selDate);
-        String test = "실패";
-        if (selDate != null) {
-            test = "성공";
-        }
 
-        day=day-c.get(Calendar.DAY_OF_WEEK)+1;
+        Calendar c = Calendar.getInstance();
+        c.set(year,month, date);
+
+        Log.d(TAG,year+"/"+month+"/"+date);
 
         ArrayList<String> items = new ArrayList<String>();
 
         items.add(null);
 
         for (int i = 0; i < 7; i++) {
-            items.add(day+++"");
+            int tempDate= date+i;
+            if(tempDate>c.get(Calendar.DAY_OF_WEEK)){
+                tempDate= date+i -c.get(Calendar.DAY_OF_WEEK)+1;
+            }
+            items.add(tempDate+"");
         }
+
         for(int i=0;i<24;i++){
             String tmp= String.format("%2d",i)+"시";
             items.add(tmp);
@@ -100,15 +94,17 @@ public class WeekCalendarFragment extends Fragment {
             }
         }
 
-
-        WeekAdapter adapter = new WeekAdapter(getActivity(), items, year, month,day);
+        WeekAdapter adapter = new WeekAdapter(getActivity(), items, year, month, date);
 
         // 어탭터 연결
-        GridView gridView = (GridView) rootView.findViewById(R.id.gridView);
+        GridView gridView = (GridView) rootView.findViewById(R.id.weekGridView);
         gridView.setAdapter(adapter);
 
 
         // Inflate the layout for this fragment
         return rootView;
     }
+
+
+
 }

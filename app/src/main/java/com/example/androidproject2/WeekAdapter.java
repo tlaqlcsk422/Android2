@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class WeekAdapter  extends BaseAdapter implements OnItemClickListener{
+
     private static final String TAG="Week grid Adapter View";
 
     private final Context mContext;
@@ -33,6 +34,8 @@ public class WeekAdapter  extends BaseAdapter implements OnItemClickListener{
 
         this.day=day;
         inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
     }
     public void setOnItemClickListener (OnItemClickListener listener){
         this.listener = listener;
@@ -58,13 +61,19 @@ public class WeekAdapter  extends BaseAdapter implements OnItemClickListener{
     }
 
     @Override
-    public View getView(int position, View View, ViewGroup parent) {
+    public View getView( int position, View View, ViewGroup parent) {
         if (view == null) {
             view = inflater.inflate(R.layout.text_item, parent, false);
             this.view = view;
         }
 
         Log.d(TAG,"create "+position);
+
+        Log.d(TAG,"여기까지---------------------------------------------------------");
+
+        for(int i=0;i<items.size();i++) {
+            Log.d(TAG, items.get(i)+"");
+        }
 
         TextView itemTv=view.findViewById(R.id.text);
 
@@ -76,11 +85,11 @@ public class WeekAdapter  extends BaseAdapter implements OnItemClickListener{
             itemTv.setBackgroundColor(Color.WHITE);
 
             //일요일 빨간색 표시
-            if(position % 7 == 0)
+            if(position == 1)
                 itemTv.setTextColor(Color.RED);
 
             //토요일 파란색 표시
-            if(position % 7 == 6)
+            if(position == 7)
                 itemTv.setTextColor(Color.BLUE);
 
             //오늘 날짜 받아오기
@@ -88,13 +97,13 @@ public class WeekAdapter  extends BaseAdapter implements OnItemClickListener{
             int nowYear = cal.get(Calendar.YEAR);
             int nowMonth = cal.get(Calendar.MONTH);
             nowMonth++;
-            int week=cal.get(Calendar.WEEK_OF_MONTH);
             int date = cal.get(Calendar.DATE);
 
-            Log.d(TAG,items.get(position)+", "+itemTv.getText());
         }
 
-        itemTv.setOnClickListener(new View.OnClickListener() {
+        Log.d(TAG,position+": "+itemTv.getText()+" check");
+
+        /*itemTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "클릭");
@@ -107,7 +116,7 @@ public class WeekAdapter  extends BaseAdapter implements OnItemClickListener{
                 }
 
             }
-        });
+        });*/
 
         return View;
     }

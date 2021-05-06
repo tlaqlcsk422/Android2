@@ -10,17 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link WeekViewFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class WeekViewFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG="Week View Fragment";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -54,7 +50,7 @@ public class WeekViewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_week_view, container, false);
 
-        ViewPager2 vpPager = rootView.findViewById(R.id.vpPager);
+        ViewPager2 vpPager = rootView.findViewById(R.id.weekVpPager);
         FragmentStateAdapter adapter = new WeekCalendarAdapter(this);
         vpPager.setAdapter(adapter);
         vpPager.setCurrentItem(49);//현재 페이지를 오늘 날짜 position으로 설정
