@@ -84,10 +84,13 @@
 </LinearLayout>
 
 <GridView
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:id="@+id/gridView"
-android:numColumns="7"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/gridView"
+    android:numColumns="7"
+    android:background="#90B0E0"
+    android:verticalSpacing="1dp"
+    android:horizontalSpacing="1dp"
     >
 
 

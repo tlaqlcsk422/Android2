@@ -1,6 +1,7 @@
 package com.example.androidproject2;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -119,6 +120,9 @@ public class MonthCalendarFragment extends Fragment {
         }
         for (int i = 1; i <= allDay; i++) {
             days.add(i);
+        }
+        while(days.size() != 42){
+            days.add(null);
         }
 
 
