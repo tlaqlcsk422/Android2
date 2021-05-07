@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.month_view:
                 FragmentManager fragmentManager = getSupportFragmentManager();

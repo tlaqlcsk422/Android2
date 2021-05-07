@@ -120,6 +120,9 @@ public class MonthCalendarFragment extends Fragment {
         for (int i = 1; i <= allDay; i++) {
             days.add(i);
         }
+        while(days.size() != 42){
+            days.add(null);
+        }
 
 
         DayAdapter adapter = new DayAdapter(getActivity(), days, year, month);
