@@ -2,19 +2,14 @@ package com.example.androidproject2;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,7 +24,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         private ArrayList<Integer> items = new ArrayList<Integer>();
         private View view;
         private int year,month;
-        TextView tempView;
 
         OnItemClickListener listener;
 
@@ -66,7 +60,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         return position;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View getView ( int position, View view, ViewGroup parent){
         if (view == null) {
@@ -78,31 +71,27 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
         TextView dayTv = view.findViewById(R.id.text);//시작 문자는 대문자 X 소문자로 시작
 
-        //int gridviewH = view.getHeight() / 6;
-        dayTv.setHeight(253);
-
         if(items.get(position) == null) {//null 확인 후에 공백 문자 넣음
             dayTv.setText("");
         } else {
-                dayTv.setText(items.get(position) + "");//String 으로 해야해서 +"" 추가함
-                dayTv.setBackgroundColor(Color.WHITE);
+            dayTv.setText(items.get(position) + "");//String 으로 해야해서 +"" 추가함
+
+            dayTv.setBackgroundColor(Color.WHITE);
+            //일요일 빨간색 표시
+            if(position % 7 == 0)
+                dayTv.setTextColor(Color.RED);
+
+            //토요일 파란색 표시
+            if(position % 7 == 6)
+                dayTv.setTextColor(Color.BLUE);
 
 
-                //일요일 빨간색 표시
-                if(position % 7 == 0)
-                    dayTv.setTextColor(Color.RED);
-
-                //토요일 파란색 표시
-                if(position % 7 == 6)
-                    dayTv.setTextColor(Color.BLUE);
-
-
-                //오늘 날짜 받아오기
-                Calendar cal = Calendar.getInstance();
-                int nowYear = cal.get(Calendar.YEAR);
-                int nowMonth = cal.get(Calendar.MONTH);
-                nowMonth++;
-                int date = cal.get(Calendar.DATE);
+            //오늘 날짜 받아오기
+            Calendar cal = Calendar.getInstance();
+            int nowYear = cal.get(Calendar.YEAR);
+            int nowMonth = cal.get(Calendar.MONTH);
+            nowMonth++;
+            int date = cal.get(Calendar.DATE);
 
         }
         Log.d(TAG, items.get(position) + ", "+dayTv.getText());
@@ -111,13 +100,10 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "클릭");
-                //이전 포지션 배경색 white로 바꾸기
-                if(tempView !=null)
-                    tempView.setBackgroundColor(Color.WHITE);
-                //클릭한 아이템 배경색을 cyan으로 변경
+                //다른 포지션 배경색 white로 바꾸기 추가해야됨
                 if (getItem(position) != null) {//null 값일 때 출력 X
                     dayTv.setBackgroundColor(Color.CYAN);
-                    tempView = dayTv;
+
                     print(year + "년" + month + "월" + ((int) getItem(position)) + "일");
                     Log.d(TAG, year + "년" + month + "월" + ((int) getItem(position)) + "일");
                 }
