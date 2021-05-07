@@ -32,8 +32,10 @@ public class MonthCalendarFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    int year;
-    int month;
+
+    private int year;
+    private int month;
+
     int firstDay; //시작 요일
     int allDay; //한달 일 수
 
@@ -60,6 +62,7 @@ public class MonthCalendarFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

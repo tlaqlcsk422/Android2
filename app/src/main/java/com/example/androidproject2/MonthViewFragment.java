@@ -1,5 +1,6 @@
 package com.example.androidproject2;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;

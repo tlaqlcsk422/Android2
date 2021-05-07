@@ -5,10 +5,12 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,6 +32,9 @@ public class WeekCalendarFragment extends Fragment {
     private int year;
     private int month;
     private int date;
+
+    //OnItemClickListener listener;
+
 
     private static final String TAG="Week Calendar Fragment";
 
@@ -57,6 +62,10 @@ public class WeekCalendarFragment extends Fragment {
         }
     }
 
+    /*public void setOnItemClickListener (View.OnClickListener listener){
+        this.listener = listener;
+    }*/
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,25 +79,38 @@ public class WeekCalendarFragment extends Fragment {
         //gridView 일 표시
 
         Calendar c = Calendar.getInstance();
-        c.set(year,month, date);
+        c.set(year,month, 1);
 
         Log.d(TAG,year+"/"+(month+1)+"/"+date);
 
+        ArrayList<String> dateItems = new ArrayList<String>();
         ArrayList<String> items = new ArrayList<String>();
 
-        items.add(null);
 
+
+        dateItems.add(null);
         for (int i = 0; i < 7; i++) {
             int tempDate= date+i;
-            if(tempDate>c.get(Calendar.DAY_OF_WEEK)){
-                tempDate= date+i -c.get(Calendar.DAY_OF_WEEK)+1;
+            if(tempDate>c.getActualMaximum(Calendar.DAY_OF_MONTH)){
+
+                Log.d(TAG,month+" check");
+                tempDate= date+i -c.getActualMaximum(Calendar.DAY_OF_MONTH);
+                Log.d(TAG,year+"/"+(month+2)+"/"+tempDate);
+            }
+            else{
                 Log.d(TAG,year+"/"+(month+1)+"/"+tempDate);
             }
-            items.add(tempDate+"");
+            dateItems.add(tempDate+"");
         }
 
+        WeekDateAdapter dateAdapter=new WeekDateAdapter(getActivity(),dateItems,year,month,date);
+
+        GridView dateGridView=(GridView) rootView.findViewById(R.id.weekDate);
+        dateGridView.setAdapter(dateAdapter);
+
+
         for(int i=0;i<24;i++){
-            String tmp= String.format("%2d",i)+"시";
+            String tmp= String.format("%2d",i);
             items.add(tmp);
             for(int j=0;j<7;j++){
                 items.add(null);

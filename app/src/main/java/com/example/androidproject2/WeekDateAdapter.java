@@ -1,9 +1,7 @@
 package com.example.androidproject2;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,11 +16,10 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
-public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
+public class WeekDateAdapter extends BaseAdapter implements OnItemClickListener{
 
-    private static final String TAG="Week grid Adapter View";
+    private static final String TAG="Week Date Adapter View";
 
     private final Context mContext;
     private LayoutInflater inflater;
@@ -32,7 +29,7 @@ public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
 
     OnItemClickListener listener;
 
-    public WeekAdapter(Context context, ArrayList<String> items, int year, int month, int day) {
+    public WeekDateAdapter(Context context, ArrayList<String> items, int year, int month, int day) {
         this.mContext = context;
         this.items = items;
         this.year=year;
@@ -71,10 +68,7 @@ public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
             view = inflater.inflate(R.layout.text_item, parent, false);
             this.view = view;
         }
-
         this.position=position;
-
-        //Log.d(TAG,"create "+position);
 
         TextView itemTv=view.findViewById(R.id.text);
 
@@ -83,9 +77,15 @@ public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
         }else {
             itemTv.setText(items.get(position));
         }
-        if(items.get(position)==null) {
-            itemTv.setForeground(ContextCompat.getDrawable(mContext, R.drawable.rectangle));
-        }
+        itemTv.setBackgroundColor(Color.WHITE);
+
+            //일요일 빨간색 표시
+        if(position == 0)
+            itemTv.setTextColor(Color.RED);
+
+            //토요일 파란색 표시
+        if(position == 6)
+            itemTv.setTextColor(Color.BLUE);
 
         itemTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,13 +95,11 @@ public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
                 //Intent intent=new Intent();
                 //intent.putExtra("position",position);
 
-                    int tmpTime=position/8;
-                    print(tmpTime+"시");
-
-                    //print(year + "년" + month + "월" + getItem(position % 8) + "일");
-                    //Log.d(TAG, year + "년" + month + "월" + getItem(position % 8) + "일");
+                print(year + "년" + month + "월" + getItem(position % 8) + "일");
+                Log.d(TAG, year + "년" + month + "월" + getItem(position % 8) + "일");
 
                 itemTv.setBackgroundColor(Color.CYAN);
+
             }
         });
 
@@ -111,9 +109,4 @@ public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
     void print(String message){
         Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show();
     }
-
-    private void setGridViewBackgroundColor(){
-
-    }
-
 }
