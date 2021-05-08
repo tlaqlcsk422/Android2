@@ -97,7 +97,6 @@ public class WeekDateAdapter extends BaseAdapter implements OnItemClickListener{
 
                 print(year + "년" + month + "월" + getItem(position % 8) + "일");
                 Log.d(TAG, year + "년" + month + "월" + getItem(position % 8) + "일");
-
                 itemTv.setBackgroundColor(Color.CYAN);
 
             }

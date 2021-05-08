@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,10 +64,25 @@ public class MonthViewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_month_view, container, false);
 
-        ViewPager2 vpPager = rootView.findViewById(R.id.vpPager);
-        FragmentStateAdapter adapter = new MonthCalendarAdapter(this);
-        vpPager.setAdapter(adapter);
-        vpPager.setCurrentItem(49);//현재 페이지를 오늘 날짜 position으로 설정
+        DisplayMetrics display = this.getResources().getDisplayMetrics();
+        int width = display.widthPixels;
+        int height = display.heightPixels;
+
+        if(width<height) {
+            ViewPager2 vpPager = rootView.findViewById(R.id.vpPager);
+            FragmentStateAdapter adapter = new MonthCalendarAdapter(this);
+            vpPager.setAdapter(adapter);
+            vpPager.setCurrentItem(49);//현재 페이지를 오늘 날짜 position으로 설정
+
+    }
+        else{
+            ViewPager2 vpPager = rootView.findViewById(R.id.vpPager);
+            FragmentStateAdapter adapter = new MonthCalendarAdapter(this);
+            vpPager.setAdapter(adapter);
+            vpPager.setCurrentItem(49);//현재 페이지를 오늘 날짜 position으로 설정
+        }
+
+
 
         // Inflate the layout for this fragment
         return rootView;

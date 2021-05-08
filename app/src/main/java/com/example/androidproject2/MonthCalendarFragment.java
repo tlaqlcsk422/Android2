@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -93,6 +94,9 @@ public class MonthCalendarFragment extends Fragment {
         year = mParam1;
         month = mParam2;
 
+        DisplayMetrics display = this.getResources().getDisplayMetrics();
+        int width = display.widthPixels;
+        int height = display.heightPixels;
 
         //gridView 일 표시
         String date = (month + 1) + "/" + "01/" + year;
@@ -126,7 +130,7 @@ public class MonthCalendarFragment extends Fragment {
         }
 
 
-        DayAdapter adapter = new DayAdapter(getActivity(), days, year, month);
+        DayAdapter adapter = new DayAdapter(getActivity(), days, year, month, height, width);
 
         // 어탭터 연결
         GridView gridView = (GridView) rootView.findViewById(R.id.gridView);

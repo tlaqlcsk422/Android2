@@ -2,6 +2,7 @@ package com.example.androidproject2;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,16 +25,19 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         private ArrayList<Integer> items = new ArrayList<Integer>();
         private View view;
         private int year,month;
+        private int height,width;//화면의 높이, 너비
         TextView tempView;
 
         OnItemClickListener listener;
 
 
-    public DayAdapter(Context context, ArrayList < Integer > items, int year, int month) {
+    public DayAdapter(Context context, ArrayList < Integer > items, int year, int month, int height, int width) {
         this.mContext = context;
         this.items = items;
         this.year=year;
         this.month=month+1;
+        this.height=height;
+        this.width=width;
         inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -72,8 +76,13 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
         TextView dayTv = view.findViewById(R.id.text);//시작 문자는 대문자 X 소문자로 시작
 
+        //화면 가로 세로에 따른 아이템 높이조정
         //int gridviewH = view.getHeight() / 6;
-        dayTv.setHeight(253);
+        if(width<height) { //세로일때
+            dayTv.setHeight(253);
+        }
+        else
+            dayTv.setHeight(135);
 
         if(items.get(position) == null) {//null 확인 후에 공백 문자 넣음
             dayTv.setText("");
