@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -74,17 +75,15 @@ public class MonthCalendarFragment extends Fragment {
             mParam2 = getArguments().getInt(ARG_PARAM2);
         }
     }
-/*
-    public static int getYear() {
-        return year;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FragmentActivity activity = getActivity();
+        //앱바 타이틀 변경하기
+        ((MainActivity) activity).setActionBarTitle(year+"년 "+(month+1)+"월");
+
     }
-
-    public static int getMonth() {
-        return month;
-    }
-
- */
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -136,11 +135,9 @@ public class MonthCalendarFragment extends Fragment {
         GridView gridView = (GridView) rootView.findViewById(R.id.gridView);
         gridView.setAdapter(adapter);
 
-
         // Inflate the layout for this fragment
         return rootView;
     }
-
 
 
 }
