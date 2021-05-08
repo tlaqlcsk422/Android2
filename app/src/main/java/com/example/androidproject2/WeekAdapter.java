@@ -26,22 +26,24 @@ public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
 
     private final Context mContext;
     private LayoutInflater inflater;
-    private ArrayList<String> items = new ArrayList<String>();
+    private ArrayList<String> items = new ArrayList<String>();//Item ArrayList
     private View view;
     private int year,month,day, position;
+    TextView tempView;
+    private int height,width;//화면의 높이, 너비
 
     OnItemClickListener listener;
 
-    public WeekAdapter(Context context, ArrayList<String> items, int year, int month, int day) {
+    public WeekAdapter(Context context, ArrayList<String> items, int year, int month, int day, int height ,int width) {
         this.mContext = context;
         this.items = items;
         this.year=year;
         this.month=month+1;
+        this.height=height;
+        this.width=width;
 
         this.day=day;
         inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-
     }
 
 
@@ -74,16 +76,22 @@ public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
 
         this.position=position;
 
-        //Log.d(TAG,"create "+position);
+        //Log.d(TAG,"create "+position); //많이 나와서 오류가 발생하여 생략
 
         TextView itemTv=view.findViewById(R.id.text);
 
-        if(items.get(position)==null){
+        if(width<height)//세로
+            itemTv.setHeight(253);
+        else//가로
+            itemTv.setHeight(135);
+
+        if(items.get(position)==null){//여백(요일별)
             itemTv.setText("");
-        }else {
+        }else {//시간
             itemTv.setText(items.get(position));
         }
-        if(items.get(position)==null) {
+
+        if(items.get(position)==null) {//여백 공간이면 격자 추가
             itemTv.setForeground(ContextCompat.getDrawable(mContext, R.drawable.rectangle));
         }
 
@@ -91,17 +99,14 @@ public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "클릭");
-                //다른 포지션 배경색 white로 바꾸기 추가해야됨
-                //Intent intent=new Intent();
-                //intent.putExtra("position",position);
 
-                    int tmpTime=position/8;
-                    print(tmpTime+"시");
+                    print((position/8)+"시");//클릭한 시간
+                if(tempView !=null)//그 전에 선택한 시간 배경을 하얀색으로 변경
+                    tempView.setBackgroundColor(Color.WHITE);
 
-                    //print(year + "년" + month + "월" + getItem(position % 8) + "일");
-                    //Log.d(TAG, year + "년" + month + "월" + getItem(position % 8) + "일");
+                tempView = itemTv;//다음을 위해 저장
 
-                itemTv.setBackgroundColor(Color.CYAN);
+                itemTv.setBackgroundColor(Color.CYAN);//클릭한 아이템 배경색을 cyan으로 변경
             }
         });
 

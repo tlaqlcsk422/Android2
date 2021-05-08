@@ -50,17 +50,15 @@ public class WeekCalendarAdapter extends FragmentStateAdapter {
                 date=date+cal.getActualMaximum(Calendar.DAY_OF_MONTH);
             }
             cal.set(year,month,date);
-            Log.d(TAG,year+"/"+(month+1)+"/"+date);
         }
 
         date=date-cal.get(Calendar.DAY_OF_WEEK)+1;//일요일 날짜로 바꿈
 
         //50주 전부터~50주 후까지 년, 월, 주 저장
         for(int i =0; i<NUM_ITEMS; i++){
-            weekCF.add(WeekCalendarFragment.newInstance(year,month,date));
-            Log.d(TAG,month+" 월월월");
+            weekCF.add(WeekCalendarFragment.newInstance(year,month,date));//저장
             date+=7;
-            if(date>cal.getActualMaximum(Calendar.DAY_OF_MONTH)){//한달 지나면 날짜를 바꾸고 한 달을 뒤로 넘김
+            if(date>cal.getActualMaximum(Calendar.DAY_OF_MONTH)){//한달 지나면 날짜를 바꾸고 +1
                 month++;
                 date=date-cal.getActualMaximum(Calendar.DAY_OF_MONTH);
                 if(month>11){//12월이면 1월로 바꾸고 연도 +1
@@ -69,7 +67,6 @@ public class WeekCalendarAdapter extends FragmentStateAdapter {
                 }
             }
             cal.set(year,month,date);
-            Log.d(TAG,year+"/"+(month+1)+"/"+date);
         }
 
         return weekCF.get(position);

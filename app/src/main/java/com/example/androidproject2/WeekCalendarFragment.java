@@ -3,7 +3,9 @@ package com.example.androidproject2;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,7 +44,7 @@ public class WeekCalendarFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static WeekCalendarFragment newInstance(int year, int month,int date) {
+    public static WeekCalendarFragment newInstance(int year, int month,int date) {//년도, 달, 날짜 받기
         WeekCalendarFragment fragment = new WeekCalendarFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, year);
@@ -62,66 +64,75 @@ public class WeekCalendarFragment extends Fragment {
         }
     }
 
-    /*public void setOnItemClickListener (View.OnClickListener listener){
-        this.listener = listener;
-    }*/
+    @Override
+    public void onResume() {
+        super.onResume();
+        FragmentActivity activity = getActivity();
+        //앱바 타이틀 변경하기
+        ((MainActivity) activity).setActionBarTitle(year+"년 "+(month+1)+"월");
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_week_calendar, container, false);
 
-
         year = mParam1;
         month = mParam2;
         date =mParam3;
 
-        //gridView 일 표시
+        DisplayMetrics display=this.getResources().getDisplayMetrics();
+        int width=display.widthPixels;
+        int height=display.heightPixels;
 
+        //gridView 일 표시
         Calendar c = Calendar.getInstance();
         c.set(year,month, 1);
 
         Log.d(TAG,year+"/"+(month+1)+"/"+date);
 
-        ArrayList<String> dateItems = new ArrayList<String>();
-        ArrayList<String> items = new ArrayList<String>();
+        ArrayList<Integer> dateItems = new ArrayList<Integer>();//날짜 저장 ArrayList
+        ArrayList<String> items = new ArrayList<String>();//시간+여백 저장 ArrayList
 
+        for(int i=0;i<24;i++){
+            String tmp= String.format("%2d",i);//시간 저장, 2자리 수 맞춤
+            items.add(tmp);
+            for(int j=0;j<7;j++){//여백 공간 추가하기
+                items.add(null);
+            }
+        }
+
+        WeekAdapter adapter = new WeekAdapter(getActivity(), items, year, month, date,height,width);
+
+        //어탭터 연결
+        GridView gridView = (GridView) rootView.findViewById(R.id.weekGridView);
+        gridView.setAdapter(adapter);
+
+
+        /*
+        * 시간을 스크롤해도 날짜도 같이 스크롤 되면 안 되기 때문에 gridview를 따로 만들어서 각각 저장함
+        * 사용할 함수가 조금씩 다르기 때문에 Adapter도 각각 따로 제작함 
+        * */
 
 
         dateItems.add(null);
         for (int i = 0; i < 7; i++) {
             int tempDate= date+i;
-            if(tempDate>c.getActualMaximum(Calendar.DAY_OF_MONTH)){
-
-                Log.d(TAG,month+" check");
+            if(tempDate>c.getActualMaximum(Calendar.DAY_OF_MONTH)){//날짜 넘어갔을 때
                 tempDate= date+i -c.getActualMaximum(Calendar.DAY_OF_MONTH);
-                Log.d(TAG,year+"/"+(month+2)+"/"+tempDate);
             }
-            else{
-                Log.d(TAG,year+"/"+(month+1)+"/"+tempDate);
-            }
-            dateItems.add(tempDate+"");
+            dateItems.add(tempDate);
         }
 
-        WeekDateAdapter dateAdapter=new WeekDateAdapter(getActivity(),dateItems,year,month,date);
-
+        WeekDateAdapter dateAdapter=new WeekDateAdapter(getActivity(),dateItems,year,month,date,height,width,adapter);//시간 선택의 tempView를 확인하기 위해서 adapter도 넘김
+        //어댑터 연결
         GridView dateGridView=(GridView) rootView.findViewById(R.id.weekDate);
         dateGridView.setAdapter(dateAdapter);
 
 
-        for(int i=0;i<24;i++){
-            String tmp= String.format("%2d",i);
-            items.add(tmp);
-            for(int j=0;j<7;j++){
-                items.add(null);
-            }
-        }
 
-        WeekAdapter adapter = new WeekAdapter(getActivity(), items, year, month, date);
-
-        // 어탭터 연결
-        GridView gridView = (GridView) rootView.findViewById(R.id.weekGridView);
-        gridView.setAdapter(adapter);
 
 
         // Inflate the layout for this fragment
