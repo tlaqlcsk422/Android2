@@ -96,14 +96,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
             if(position % 7 == 6)
                 dayTv.setTextColor(Color.BLUE);
 
-
-            //오늘 날짜 받아오기
-            Calendar cal = Calendar.getInstance();
-            int nowYear = cal.get(Calendar.YEAR);
-            int nowMonth = cal.get(Calendar.MONTH);
-            nowMonth++;
-            int date = cal.get(Calendar.DATE);
-
         }
         Log.d(TAG, items.get(position) + ", "+dayTv.getText());
 
