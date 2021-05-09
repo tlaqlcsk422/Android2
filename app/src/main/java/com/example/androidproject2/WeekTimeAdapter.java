@@ -1,7 +1,6 @@
 package com.example.androidproject2;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 

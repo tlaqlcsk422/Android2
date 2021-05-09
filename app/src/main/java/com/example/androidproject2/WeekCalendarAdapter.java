@@ -1,17 +1,11 @@
 package com.example.androidproject2;
 
-import android.util.Log;
-
-import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class WeekCalendarAdapter extends FragmentStateAdapter {
     private static int NUM_ITEMS = 100;
