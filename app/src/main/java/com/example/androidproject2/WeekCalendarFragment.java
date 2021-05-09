@@ -39,8 +39,6 @@ public class WeekCalendarFragment extends Fragment {
     private int month;
     private int date;
 
-    //OnItemClickListener listener;
-
 
     private static final String TAG="Week Calendar Fragment";
 
@@ -101,10 +99,8 @@ public class WeekCalendarFragment extends Fragment {
         ArrayList<String> timeItems =new ArrayList<String>();
         ArrayList<String> items = new ArrayList<String>();//여백 저장 ArrayList
 
-        /*
-         * Time과 여백을 각각 설정함
-         * Adapter도 따로 설정
-         * */
+        //Time과 여백을 각각 설정, Adapter도 따로 설정
+
 
         for(int i=0;i<24;i++){
             String tmp= String.format("%2d",i);//시간 저장, 2자리 수 맞춤

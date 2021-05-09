@@ -23,7 +23,7 @@ public class WeekTimeAdapter extends BaseAdapter implements OnItemClickListener{
 
     private final Context mContext;
     private LayoutInflater inflater;
-    private ArrayList<String> items = new ArrayList<String>();//Item ArrayList
+    private ArrayList<String> items = new ArrayList<String>();//시간 ArrayList
     private View view;
     private int year,month,day, position;
     private int height,width;//화면의 높이, 너비
@@ -72,7 +72,7 @@ public class WeekTimeAdapter extends BaseAdapter implements OnItemClickListener{
 
         this.position=position;
 
-        //Log.d(TAG,"create "+position); //많이 나와서 오류가 발생하여 생략
+        //Log.d(TAG,"create "+position);
 
         TextView itemTv=view.findViewById(R.id.text);
 

@@ -21,8 +21,7 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
         private final Context mContext;
         private LayoutInflater inflater;
-        //일(1~31)을 저장할 벡터
-        private ArrayList<Integer> items = new ArrayList<Integer>();
+        private ArrayList<Integer> items = new ArrayList<Integer>();//일(1~31)을 저장할 벡터
         private View view;
         private int year,month;
         private int height,width;//화면의 높이, 너비

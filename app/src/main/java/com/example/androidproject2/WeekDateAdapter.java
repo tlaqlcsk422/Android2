@@ -23,7 +23,7 @@ public class WeekDateAdapter extends BaseAdapter implements OnItemClickListener{
 
     private final Context mContext;
     private LayoutInflater inflater;
-    private ArrayList<Integer> items = new ArrayList<Integer>();
+    private ArrayList<Integer> items = new ArrayList<Integer>();//날짜 ArrayList
     private View view;
     private int year,month,day, position;
     TextView tempView;
@@ -91,11 +91,11 @@ public class WeekDateAdapter extends BaseAdapter implements OnItemClickListener{
         itemTv.setBackgroundColor(Color.WHITE);
 
 
-        if(position == 0)//일요일 빨간색 표시
+        if(position == 1)//일요일 빨간색 표시
             itemTv.setTextColor(Color.RED);
 
 
-        if(position == 6)//토요일 파란색 표시
+        if(position == 7)//토요일 파란색 표시
             itemTv.setTextColor(Color.BLUE);
 
         itemTv.setOnClickListener(new View.OnClickListener() {

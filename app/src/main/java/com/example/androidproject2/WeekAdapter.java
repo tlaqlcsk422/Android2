@@ -73,10 +73,7 @@ public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
             view = inflater.inflate(R.layout.text_item, parent, false);
             this.view = view;
         }
-
         this.position=position;
-
-        //Log.d(TAG,"create "+position); //많이 나와서 오류가 발생하여 생략
 
         TextView itemTv=view.findViewById(R.id.text);
 
