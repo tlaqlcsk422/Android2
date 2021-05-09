@@ -1,9 +1,7 @@
 package com.example.androidproject2;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,23 +16,21 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
-public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
+public class WeekTimeAdapter extends BaseAdapter implements OnItemClickListener{
 
-    private static final String TAG="Week grid Adapter View";
+    private static final String TAG="Week Time Adapter View";
 
     private final Context mContext;
     private LayoutInflater inflater;
     private ArrayList<String> items = new ArrayList<String>();//Item ArrayList
     private View view;
     private int year,month,day, position;
-    TextView tempView;
     private int height,width;//화면의 높이, 너비
 
     OnItemClickListener listener;
 
-    public WeekAdapter(Context context, ArrayList<String> items, int year, int month, int day, int height ,int width) {
+    public WeekTimeAdapter(Context context, ArrayList<String> items, int year, int month, int day, int height , int width) {
         this.mContext = context;
         this.items = items;
         this.year=year;
@@ -85,20 +81,16 @@ public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
         else//가로
             itemTv.setHeight(135);
 
-        itemTv.setText("");
+
+        itemTv.setText(items.get(position));//시간 입력
+
 
         itemTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "클릭");
 
-                    print((position/7)+"시");//클릭한 시간
-                if(tempView !=null)//그 전에 선택한 시간 배경을 하얀색으로 변경
-                    tempView.setBackgroundColor(Color.WHITE);
-
-                tempView = itemTv;//다음을 위해 저장
-
-                itemTv.setBackgroundColor(Color.CYAN);//클릭한 아이템 배경색을 cyan으로 변경
+                print((position)+"시");//클릭한 시간
             }
         });
 
