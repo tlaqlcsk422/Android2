@@ -99,8 +99,4 @@ public class WeekTimeAdapter extends BaseAdapter implements OnItemClickListener{
         Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show();
     }
 
-    private void setGridViewBackgroundColor(){
-
-    }
-
 }
