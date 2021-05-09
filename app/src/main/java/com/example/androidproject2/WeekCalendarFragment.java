@@ -17,13 +17,10 @@ import java.util.Calendar;
 
 public class WeekCalendarFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM3 = "param3";
 
-    // TODO: Rename and change types of parameters
     private int mParam1;
     private int mParam2;
     private int mParam3;
@@ -35,9 +32,7 @@ public class WeekCalendarFragment extends Fragment {
 
     private static final String TAG="Week Calendar Fragment";
 
-    public WeekCalendarFragment() {
-        // Required empty public constructor
-    }
+    public WeekCalendarFragment() { }
 
     public static WeekCalendarFragment newInstance(int year, int month,int date) {//년도, 달, 날짜 받기
         WeekCalendarFragment fragment = new WeekCalendarFragment();
