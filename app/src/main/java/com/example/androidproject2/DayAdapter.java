@@ -87,7 +87,8 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         } else {
             dayTv.setText(items.get(position) + "");//String 으로 해야해서 +"" 추가함
 
-            dayTv.setBackgroundColor(Color.WHITE);
+            if(tempView != null)
+                tempView.setBackgroundColor(Color.CYAN);
             //일요일 빨간색 표시
             if(position % 7 == 0)
                 dayTv.setTextColor(Color.RED);
