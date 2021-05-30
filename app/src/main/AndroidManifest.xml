@@ -9,6 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject2">
+
+        <meta-data
+            android:name="AIzaSyABgxej_HyyUnQf7ntPPs-EOZfk4sWWHMQ"
+            android:value="API키"/>
+
+        <activity android:name=".WriteActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,9 +15,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.pedro.library.AutoPermissions;
+import com.pedro.library.AutoPermissionsListener;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AutoPermissionsListener {
+    private int year=0,month=-1,day=0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +34,20 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.main_container, new MonthViewFragment());
         fragmentTransaction.commit();
 
+        FloatingActionButton fButton=findViewById(R.id.floatingActionButton);
+
+
+        fButton.setOnClickListener(this::onClick);
+
+        AutoPermissions.Companion.loadAllPermissions(this,121);
     }
+
+    public void onClick(View v){
+        Intent intent =new Intent(this,WriteActivity.class);
+        startActivity(intent);
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -69,4 +88,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onDenied(int i, String[] permissions) {
+
+    }
+
+    @Override
+    public void onGranted(int i, String[] permissions) {
+
+    }
 }
