@@ -1,6 +1,9 @@
 package com.example.androidproject2;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +17,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static android.app.Activity.RESULT_OK;
+
 public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
         private static final String TAG="grid Adapter View";
@@ -22,9 +27,13 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         private LayoutInflater inflater;
         private ArrayList<Integer> items = new ArrayList<Integer>();//일(1~31)을 저장할 벡터
         private View view;
-        private int year,month;
+        private int year,month, day;
         private int height,width;//화면의 높이, 너비
         TextView tempView;
+
+        private Activity activity;
+        private MainActivity mainActivity;
+
 
         OnItemClickListener listener;
 
@@ -70,7 +79,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
             this.view = view;
         }
 
-        Log.d(TAG,"create "+position);
 
         TextView dayTv = view.findViewById(R.id.text);//시작 문자는 대문자 X 소문자로 시작
 
@@ -103,7 +111,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         dayTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "클릭");
                 //이전 포지션 배경색 white로 바꾸기
                 if(tempView !=null)
                     tempView.setBackgroundColor(Color.WHITE);
@@ -112,8 +119,29 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
                     dayTv.setBackgroundColor(Color.CYAN);
                     tempView = dayTv;
                     print(year + "년" + month + "월" + ((int) getItem(position)) + "일");
-                    Log.d(TAG, year + "년" + month + "월" + ((int) getItem(position)) + "일");
                 }
+
+                day = (Integer)getItem(position);
+                /*정보 전달 위한 intent방법
+                Intent intent = new Intent(mContext, MainActivity.class);
+                intent.putExtra("Year",year);
+                intent.putExtra("Month",month);
+                intent.putExtra("Day",day);
+                setResult(RESULT_OK, intent);
+                finish();
+                 */
+                //interface 방법
+                //getDate.getYearMonthDay(year,month,day);
+                //sharedPreferences 방법
+                /*
+                SharedPreferences pref = mContext.getSharedPreferences("GetDate", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putInt("Year",year);
+                editor.putInt("Month",month);
+                editor.putInt("Day",day);
+                editor.commit();
+
+                 */
 
             }
         });
@@ -122,7 +150,9 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
     }
 
 
+
     void print(String message){
         Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show();
     }
-}
+
+}   

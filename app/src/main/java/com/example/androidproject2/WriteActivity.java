@@ -2,11 +2,14 @@ package com.example.androidproject2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,15 +31,22 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
     private TimePicker sTimePicker, eTimePicker;
     private EditText subTv,memoTv, addressTv;
     private String subText, memoText, addressText, date,sDate,eDate;
-    private int sHour, sMin,eHour, eMin;
+    private int sHour, sMin,eHour, eMin, year, month, day;
     private Geocoder geocoder;
     private List<Address> addressList=null;
     private GoogleMap mMap;
+    private static final String TAG="WriteActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
+
+        Intent intent = getIntent();
+        year = intent.getIntExtra("year",-1);
+        month = intent.getIntExtra("month", -1);
+        day = intent.getIntExtra("day",-1);
+        Log.d(TAG, year+", "+month+", "+day);
 
         sTimePicker=(TimePicker) findViewById(R.id.startTimePicker);
         eTimePicker=(TimePicker) findViewById(R.id.endTimePicker);
@@ -50,13 +60,16 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         geocoder=new Geocoder(getBaseContext());
 
         SupportMapFragment mapFragment=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
-        mapFragment.getMapAsync(this);
+        //mapFragment.getMapAsync(this);
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveSql();//함수 작성
                 //나가기
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
@@ -69,6 +82,10 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                     delSql();//함수 작성
                     //나가기
                 }
+                //나가기
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
@@ -76,6 +93,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onClick(View v) {
                 //나가기
+
             }
         });
 
@@ -127,10 +145,6 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         memoText= String.valueOf(memoTv.getText());//메모 받기
         subText= String.valueOf(subTv.getText());//제목 받기
         addressText=String.valueOf(addressTv.getText());//주소 받기
-
-
-
-
     }
 
     public void delSql(){//sql 삭제 함수

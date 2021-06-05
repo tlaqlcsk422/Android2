@@ -5,28 +5,48 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
 
+import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements AutoPermissionsListener {
-    private int year=0,month=-1,day=0;
+
+public class MainActivity extends AppCompatActivity implements AutoPermissionsListener{
+    public static int year1=0,month1=-1,day1=0;
+    public static ArrayList<Activity> actList = new ArrayList<Activity>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*
+        SharedPreferences pref = mContext.getSharedPreferences("GetDate",Activity.MODE_PRIVATE);
+        year1 = pref.getInt("Year",0);
+        year1 = pref.getInt("Month",0);
+        year1 = pref.getInt("Day",0);
+
+         */
+
+        /*
+        Intent intent = getIntent();
+        year1 = intent.getIntExtra("Year",-1);
+        month1 = intent.getIntExtra("Month", -1);
+        day1 = intent.getIntExtra("Day",-1);
+         */
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -40,10 +60,26 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
         fButton.setOnClickListener(this::onClick);
 
         AutoPermissions.Companion.loadAllPermissions(this,121);
+
+        /*
+        DayAdapter.GetYearMonthDay date = new DayAdapter.GetYearMonthDay() {
+            @Override
+            public void getYearMonthDay(int year, int month, int day) {
+                year1 = year;
+                month1 = month;
+                day1 = day;
+            }
+        }
+
+         */
     }
 
     public void onClick(View v){
+        actList.add(this);
         Intent intent =new Intent(this,WriteActivity.class);
+        intent.putExtra("year", year1);
+        intent.putExtra("month", month1);
+        intent.putExtra("day", day1);
         startActivity(intent);
     }
 
@@ -97,4 +133,6 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
     public void onGranted(int i, String[] permissions) {
 
     }
+
+
 }
