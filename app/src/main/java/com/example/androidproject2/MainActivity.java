@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements AutoPermissionsListener{
     public static int year1=0,month1=-1,day1=0;
     public static ArrayList<Activity> actList = new ArrayList<Activity>();
+
 
 
     @Override
@@ -134,5 +136,13 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
 
     }
 
+/*
+    @Override
+    public void onYearMonthSet(int year, int month, int day) {
+        year1 = year;
+        month1 = month;
+        day1 = day;
+    }
 
+ */
 }

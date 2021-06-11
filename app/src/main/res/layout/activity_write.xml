@@ -22,11 +22,13 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name" />
+                android:text="Name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -40,7 +42,7 @@
                 <TimePicker
                     android:id="@+id/startTimePicker"
                     android:layout_width="wrap_content"
-                    android:layout_height="100sp"
+                    android:layout_height="80sp"
                     android:layout_marginLeft="30dp"
                     android:timePickerMode="spinner" />
 
@@ -48,7 +50,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="80sp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -62,7 +64,7 @@
                 <TimePicker
                     android:id="@+id/endTimePicker"
                     android:layout_width="wrap_content"
-                    android:layout_height="100sp"
+                    android:layout_height="80sp"
                     android:layout_marginLeft="30dp"
                     android:timePickerMode="spinner" />
 
@@ -70,15 +72,16 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <EditText
+                        android:layout_marginLeft="10dp"
                         android:id="@+id/addressEnterText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -91,28 +94,32 @@
                         android:id="@+id/findMapButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
                         android:text="찾기"
                         android:textColor="#000000"
                         app:backgroundTint="#AFAFAF"
                         app:iconTint="#FFFFFF" />
 
                 </LinearLayout>
-
-                <com.google.android.gms.maps.MapView
+<!--                com.google.android.gms.maps.MapView-->
+                <fragment
                     android:id="@+id/mapView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="350dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_height="150dp"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="140dp"
                 android:orientation="vertical">
 
                 <EditText
                     android:id="@+id/memoText"
                     android:layout_width="match_parent"
-                    android:layout_height="200sp"
+                    android:layout_height="match_parent"
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:text="Name" />

@@ -1,10 +1,13 @@
 package com.example.androidproject2;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
@@ -29,49 +32,65 @@ import java.util.List;
 public class WriteActivity extends AppCompatActivity implements OnMapReadyCallback {
     private Button saveBtn, delBtn, escBtn, findBtn;
     private TimePicker sTimePicker, eTimePicker;
-    private EditText subTv,memoTv, addressTv;
-    private String subText, memoText, addressText, date,sDate,eDate;
-    private int sHour, sMin,eHour, eMin, year, month, day;
+    private EditText subTv, memoTv, addressTv;
+    private String subText, memoText, addressText, date, sDate, eDate;
+    private int sHour, sMin, eHour, eMin, year, month, day;
     private Geocoder geocoder;
-    private List<Address> addressList=null;
+    private List<Address> addressList = null;
     private GoogleMap mMap;
-    private static final String TAG="WriteActivity";
+    private static final String TAG = "WriteActivity";
+    private DBHelper mDbHelper;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
 
         Intent intent = getIntent();
-        year = intent.getIntExtra("year",-1);
+        year = intent.getIntExtra("year", -1);
         month = intent.getIntExtra("month", -1);
-        day = intent.getIntExtra("day",-1);
-        Log.d(TAG, year+", "+month+", "+day);
+        day = intent.getIntExtra("day", -1);
+        Log.d(TAG, year + ", " + month + ", " + day);
 
-        sTimePicker=(TimePicker) findViewById(R.id.startTimePicker);
-        eTimePicker=(TimePicker) findViewById(R.id.endTimePicker);
-        subTv=findViewById(R.id.subjectText);
-        memoTv=findViewById(R.id.memoText);
-        addressTv=findViewById(R.id.addressEnterText);
-        saveBtn=findViewById(R.id.saveButton);
-        delBtn=findViewById(R.id.deleteButton);
-        escBtn=findViewById(R.id.escButton);
-        findBtn=findViewById(R.id.findMapButton);
-        geocoder=new Geocoder(getBaseContext());
 
-        SupportMapFragment mapFragment=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
-        //mapFragment.getMapAsync(this);
+        sTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
+        eTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
+        subTv = findViewById(R.id.subjectText);
+        memoTv = findViewById(R.id.memoText);
+        addressTv = findViewById(R.id.addressEnterText);
+        saveBtn = findViewById(R.id.saveButton);
+        delBtn = findViewById(R.id.deleteButton);
+        escBtn = findViewById(R.id.escButton);
+        findBtn = findViewById(R.id.findMapButton);
+        geocoder = new Geocoder(getBaseContext());
+        memoText = 
+        sHour = sTimePicker.getHour();
+        sMin = sTimePicker.getMinute();
+        eHour = eTimePicker.getHour();
+        eMin = eTimePicker.getMinute();
 
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveSql();//함수 작성
-                //나가기
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
+        /*
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            public void onMapReady(GoogleMap googleMap) {
+                mMap = googleMap;
+                Log.d(TAG,"map");
+                //mMap.setMyLocationEnabled();
             }
         });
+        */
+                saveBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        saveSql();//함수 작성
+                        //나가기
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
 
         delBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +116,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
+
     }
 
 
@@ -115,7 +135,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         String longitude = splitStr[12].substring(splitStr[12].indexOf("=") + 1); // 경도
         // 좌표(위도, 경도) 생성
         LatLng point = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
-
+        System.out.print(latitude);
         MarkerOptions mOptions2 = new MarkerOptions();
         mOptions2.title("search result");
         mOptions2.snippet(address);
@@ -126,6 +146,8 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15));
 
     }
+
+
 
 
     public void saveSql(){//sql 저장 함수
@@ -180,6 +202,12 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 findAddress();
             }
         });
-
     }
+
+    private void insertRecord(){
+        mDbHelper.insertSchadule(year, month, day, subTv.getText().toString(),
+                sHour, sMin, eHour, eMin, addressText, );
+    }
+
+
 }

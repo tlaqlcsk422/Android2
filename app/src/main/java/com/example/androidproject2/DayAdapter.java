@@ -1,9 +1,6 @@
 package com.example.androidproject2;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-
-import static android.app.Activity.RESULT_OK;
 
 public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
@@ -30,11 +24,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         private int year,month, day;
         private int height,width;//화면의 높이, 너비
         TextView tempView;
-
-        private Activity activity;
-        private MainActivity mainActivity;
-
-
         OnItemClickListener listener;
 
 
@@ -71,6 +60,14 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
     public long getItemId(int position) {
         return position;
     }
+
+
+/*
+    public interface OnYearMonthSetListener{
+        void onYearMonthSet(int year, int month, int day);
+    }
+
+ */
 
     @Override
     public View getView ( int position, View view, ViewGroup parent){
@@ -122,6 +119,9 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
                 }
 
                 day = (Integer)getItem(position);
+
+               // OnYearMonthSetListener.onYearMonthSet(year, month, day);
+
                 /*정보 전달 위한 intent방법
                 Intent intent = new Intent(mContext, MainActivity.class);
                 intent.putExtra("Year",year);
@@ -148,7 +148,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
         return view;
     }
-
 
 
     void print(String message){
