@@ -54,21 +54,8 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         Log.d(TAG, year + ", " + month + ", " + day);
 
 
-        sTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
-        eTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
-        subTv = findViewById(R.id.subjectText);
-        memoTv = findViewById(R.id.memoText);
-        addressTv = findViewById(R.id.addressEnterText);
-        saveBtn = findViewById(R.id.saveButton);
-        delBtn = findViewById(R.id.deleteButton);
-        escBtn = findViewById(R.id.escButton);
-        findBtn = findViewById(R.id.findMapButton);
-        geocoder = new Geocoder(getBaseContext());
-        memoText = 
-        sHour = sTimePicker.getHour();
-        sMin = sTimePicker.getMinute();
-        eHour = eTimePicker.getHour();
-        eMin = eTimePicker.getMinute();
+
+
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
@@ -84,7 +71,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 saveBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        saveSql();//함수 작성
+
                         //나가기
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -98,7 +85,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 boolean check=false;
                 //다이어그램 출력/ 확인, 취소 받고 여튼 작성
                 if(check) {
-                    delSql();//함수 작성
+                    deleteRecord();//함수 작성
                     //나가기
                 }
                 //나가기
@@ -169,9 +156,6 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         addressText=String.valueOf(addressTv.getText());//주소 받기
     }
 
-    public void delSql(){//sql 삭제 함수
-
-    }
 
 
     @Override
@@ -204,9 +188,50 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void insertRecord(){
-        mDbHelper.insertSchadule(year, month, day, subTv.getText().toString(),
-                sHour, sMin, eHour, eMin, addressText, );
+        sTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
+        eTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
+        subTv = findViewById(R.id.subjectText);
+        memoTv = findViewById(R.id.memoText);
+        addressTv = findViewById(R.id.addressEnterText);
+        saveBtn = findViewById(R.id.saveButton);
+        delBtn = findViewById(R.id.deleteButton);
+        escBtn = findViewById(R.id.escButton);
+        findBtn = findViewById(R.id.findMapButton);
+        geocoder = new Geocoder(getBaseContext());
+        memoText = memoTv.getText().toString();
+        sHour = sTimePicker.getHour();
+        sMin = sTimePicker.getMinute();
+        eHour = eTimePicker.getHour();
+        eMin = eTimePicker.getMinute();
+        mDbHelper.insertSchadule(year, month, day, subText,
+                sHour, sMin, eHour, eMin, addressText, memoText);
+    }
+
+    private void deleteRecord(){
+        mDbHelper.deleteSchadule(year, month, day);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void updateRecord(){
+        sTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
+        eTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
+        subTv = findViewById(R.id.subjectText);
+        memoTv = findViewById(R.id.memoText);
+        addressTv = findViewById(R.id.addressEnterText);
+        saveBtn = findViewById(R.id.saveButton);
+        delBtn = findViewById(R.id.deleteButton);
+        escBtn = findViewById(R.id.escButton);
+        findBtn = findViewById(R.id.findMapButton);
+        geocoder = new Geocoder(getBaseContext());
+        memoText = memoTv.getText().toString();
+        sHour = sTimePicker.getHour();
+        sMin = sTimePicker.getMinute();
+        eHour = eTimePicker.getHour();
+        eMin = eTimePicker.getMinute();
+        mDbHelper.updateSchadule(year, month, day, subText,
+                sHour, sMin, eHour, eMin, addressText, memoText);
     }
 
 

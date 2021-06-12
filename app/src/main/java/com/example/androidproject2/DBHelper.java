@@ -35,9 +35,8 @@ public class DBHelper extends SQLiteOpenHelper {
                                String place, String memo){
         try{
             String sql = String.format(
-                    "INSERT INTO %s(%d, %d, %d, %s, %d, %d, %d %d %s %s) VALUES(NULL, '%d','%d','%d','%s','%d','%d','%d','%d','%s','%s')",
+                    "INSERT INTO %s(%d %d, %d, %s, %d, %d, %d %d %s %s) VALUES(NULL, '%d','%d','%d','%s','%d','%d','%d','%d','%s','%s')",
                     Schedule.Schadules.TABLE_NAME,
-                    Schedule.Schadules._ID,
                     Schedule.Schadules.KEY_YEAR,
                     Schedule.Schadules.KEY_MONTH,
                     Schedule.Schadules.KEY_DAY,
@@ -61,7 +60,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                String place, String memo){
         try {
             String sql = String.format(
-                    "UPDATE %s SET %s = '%s', %d = '%d', %d = '%d', %d = '%d', %d = '%d', %s = '%s', %s ='%s' WHERE %d = '%d' && %d = '%d' && %d = '%d'",
+                    "UPDATE %s SET %s = '%s', %d = '%d', %d = '%d', %d = '%d', %d = '%d', %s = '%s', %s ='%s' WHERE %d = '%d' AND %d = '%d' AND %d = '%d'",
                     Schedule.Schadules.TABLE_NAME,
                     Schedule.Schadules.KEY_TITLE, title,
                     Schedule.Schadules.KEY_SHOUR, shour,
@@ -79,9 +78,37 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void deleteSchadule(int year, int month, int day){
+        try{
+            String sql = String.format(
+                    "DELETE FROM %s WHERE %s = %s AND %s = %s AND %s = %s",
+                    Schedule.Schadules.TABLE_NAME,
+                    Schedule.Schadules.KEY_YEAR, year,
+                    Schedule.Schadules.KEY_MONTH, month,
+                    Schedule.Schadules.KEY_DAY, day);
+        }catch (SQLException e){
+            Log.e(TAG, "Error in deleting recodes");
+        }
+    }
+
     public Cursor getAllSchadules(){
         String sql = "Select * From " + Schedule.Schadules.TABLE_NAME;
         return getReadableDatabase().rawQuery(sql,null);
     }
+/*
+    public String isSchadule(int year, int month, int day){
+            String sql = String.format(
+                    "(SELECT EXISTS(SELECT * FROM %s WHERE %d = %d AND % = %d AND %d = %d) AS SUCCESS",
+                    Schedule.Schadules.TABLE_NAME,
+                    Schedule.Schadules.KEY_YEAR, year,
+                    Schedule.Schadules.KEY_MONTH, month,
+                    Schedule.Schadules.KEY_DAY, day
+            );
+        return getReadableDatabase().rawQuery(sql, null);
+
+    }
+
+ */
+
 }
 
