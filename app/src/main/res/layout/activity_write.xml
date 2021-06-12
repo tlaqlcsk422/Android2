@@ -81,14 +81,14 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:layout_marginLeft="10dp"
                         android:id="@+id/addressEnterText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:ems="10"
                         android:inputType="textPersonName"
-                        android:text="Name" />
+                        android:text="Address" />
 
                     <Button
                         android:id="@+id/findMapButton"
@@ -122,7 +122,7 @@
                     android:layout_height="match_parent"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="Name" />
+                    android:text="Memo" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

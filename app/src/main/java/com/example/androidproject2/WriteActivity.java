@@ -34,7 +34,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
     private TimePicker sTimePicker, eTimePicker;
     private EditText subTv, memoTv, addressTv;
     private String subText, memoText, addressText, date, sDate, eDate;
-    private int sHour, sMin, eHour, eMin, year, month, day;
+    private int sHour, sMin, eHour, eMin, year, month, day, time;
     private Geocoder geocoder;
     private List<Address> addressList = null;
     private GoogleMap mMap;
@@ -51,6 +51,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         year = intent.getIntExtra("year", -1);
         month = intent.getIntExtra("month", -1);
         day = intent.getIntExtra("day", -1);
+        time=13;
         Log.d(TAG, year + ", " + month + ", " + day);
 
 
@@ -64,6 +65,8 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         escBtn = findViewById(R.id.escButton);
         findBtn = findViewById(R.id.findMapButton);
         geocoder = new Geocoder(getBaseContext());
+
+        subTv.setText(year+"년 "+(month+1)+"월 "+day+"일 "+time+"시");
 
 
 
@@ -79,7 +82,6 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 saveBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         //나가기
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -95,11 +97,11 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 if(check) {
                     deleteRecord();//함수 작성
                     //나가기
+                    //삭제
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
-                //나가기
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
             }
         });
 
@@ -107,7 +109,9 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onClick(View v) {
                 //나가기
-
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
@@ -153,9 +157,6 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15));
 
     }
-
-
-
 
     public void saveSql(){//sql 저장 함수
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){//시간 받기
