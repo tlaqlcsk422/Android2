@@ -68,7 +68,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
-        /*
+
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
@@ -76,7 +76,6 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 //mMap.setMyLocationEnabled();
             }
         });
-        */
                 saveBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -112,14 +111,26 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
+        findBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findAddress();
+            }
+        });
+
 
     }
 
 
     public void findAddress(){//지도 찾기 함수
         addressText= String.valueOf(addressTv.getText());
+        Log.d(TAG,addressText);
         try{
-            addressList=geocoder.getFromLocationName(addressText,10);
+            addressList=geocoder.getFromLocationName(addressText,20);
+            for(int i=0;i<addressList.size();i++) {
+                String tmp= String.valueOf(addressList.get(i));
+                Log.d(TAG, tmp);
+            }
         }catch (IOException e){
             e.printStackTrace();
         }
