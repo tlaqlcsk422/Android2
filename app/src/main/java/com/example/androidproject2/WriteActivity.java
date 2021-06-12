@@ -4,12 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
@@ -21,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -222,18 +218,20 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
             eHour=eTimePicker.getCurrentHour();
             eMin=eTimePicker.getCurrentMinute();
         }
-        memoText= String.valueOf(memoTv.getText());//메모 받기
         subText= String.valueOf(subTv.getText());//제목 받기
         addressText=String.valueOf(addressTv.getText());//주소 받기
+        memoText= String.valueOf(memoTv.getText());//메모 받기
+
+        Log.d(TAG, year+"년"+ month+"월"+ day+"일"+ subText+sHour+"시"+ sMin+"분"+ eHour+"시"+ eMin+"분"+ addressText+ memoText);
 
         //저장
-        mDbHelper.insertSchadule(year, month, day, subText,
+        mDbHelper.insertSchedule(year, month, day, subText,
                 sHour, sMin, eHour, eMin, addressText, memoText);
     }
 
     //sql 삭제 함수
     private void deleteRecord(){
-        mDbHelper.deleteSchadule(year, month, day);
+        mDbHelper.deleteSchedule(year, month, day);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -243,16 +241,16 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         sMin = sTimePicker.getMinute();
         eHour = eTimePicker.getHour();
         eMin = eTimePicker.getMinute();
-        mDbHelper.updateSchadule(year, month, day, subText,
+        mDbHelper.updateSchedule(year, month, day, subText,
                 sHour, sMin, eHour, eMin, addressText, memoText);
     }
 
     private void viewAllRecord(){
-        Cursor cursor = mDbHelper.getAllSchadules();
+        Cursor cursor = mDbHelper.getAllSchedules();
 
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.text_item, cursor, new String[]{
-                Schedule.Schadules._ID,
-                Schedule.Schadules.KEY_TITLE},
+                Schedule.Schedules._ID,
+                Schedule.Schedules.KEY_TITLE},
                 new int[]{R.id.text2}, 0);
 
         ListView lv = (ListView)findViewById(R.id.list_item);

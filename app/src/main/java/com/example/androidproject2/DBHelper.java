@@ -21,33 +21,33 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG,getClass().getName() + ".onCreate() ");
-        db.execSQL(Schedule.Schadules.CREATE_TABLE);
+        db.execSQL(Schedule.Schedules.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(Schedule.Schadules.DELETE_TABLE);
+        db.execSQL(Schedule.Schedules.DELETE_TABLE);
         onCreate(db);
     }
 
-    public void insertSchadule(int year, int month, int day, String title,
-                               int shour, int smin, int ehour, int emin,
+    public void insertSchedule(int year, int month, int day, String title,
+                               int sHour, int sMin, int eHour, int eMin,
                                String place, String memo){
         try{
             String sql = String.format(
-                    "INSERT INTO %s(%d %d, %d, %s, %d, %d, %d %d %s %s) VALUES(NULL, '%d','%d','%d','%s','%d','%d','%d','%d','%s','%s')",
-                    Schedule.Schadules.TABLE_NAME,
-                    Schedule.Schadules.KEY_YEAR,
-                    Schedule.Schadules.KEY_MONTH,
-                    Schedule.Schadules.KEY_DAY,
-                    Schedule.Schadules.KEY_TITLE,
-                    Schedule.Schadules.KEY_SHOUR,
-                    Schedule.Schadules.KEY_SMIN,
-                    Schedule.Schadules.KEY_EHOUR,
-                    Schedule.Schadules.KEY_EMIN,
-                    Schedule.Schadules.KEY_PLACE,
-                    Schedule.Schadules.KEY_MEMO,
-                    year, month, day, title, shour, smin, ehour, emin, place, memo);
+                    "INSERT INTO %s(%d %d, %d, %s, %d, %d, %d %d %s %s) VALUES('%s', '%d','%d','%d','%s','%d','%d','%d','%d','%s','%s')",
+                    Schedule.Schedules.TABLE_NAME,
+                    Schedule.Schedules.KEY_YEAR,
+                    Schedule.Schedules.KEY_MONTH,
+                    Schedule.Schedules.KEY_DAY,
+                    Schedule.Schedules.KEY_TITLE,
+                    Schedule.Schedules.KEY_SHOUR,
+                    Schedule.Schedules.KEY_SMIN,
+                    Schedule.Schedules.KEY_EHOUR,
+                    Schedule.Schedules.KEY_EMIN,
+                    Schedule.Schedules.KEY_PLACE,
+                    Schedule.Schedules.KEY_MEMO,
+                    Schedule.DB_NAME,year, month, day, title, sHour, sMin, eHour, eMin, place, memo);
 
             getWritableDatabase().execSQL(sql);
         }catch (SQLException e){
@@ -55,47 +55,48 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void updateSchadule(int year, int month, int day, String title,
-                               int shour, int smin, int ehour, int emin,
+    public void updateSchedule(int year, int month, int day, String title,
+                               int sHour, int sMin, int eHour, int eMin,
                                String place, String memo){
         try {
             String sql = String.format(
                     "UPDATE %s SET %s = '%s', %d = '%d', %d = '%d', %d = '%d', %d = '%d', %s = '%s', %s ='%s' WHERE %d = '%d' AND %d = '%d' AND %d = '%d'",
-                    Schedule.Schadules.TABLE_NAME,
-                    Schedule.Schadules.KEY_TITLE, title,
-                    Schedule.Schadules.KEY_SHOUR, shour,
-                    Schedule.Schadules.KEY_SMIN, smin,
-                    Schedule.Schadules.KEY_EHOUR, ehour,
-                    Schedule.Schadules.KEY_EMIN, emin,
-                    Schedule.Schadules.KEY_PLACE, place,
-                    Schedule.Schadules.KEY_MEMO, memo,
-                    Schedule.Schadules.KEY_YEAR, year,
-                    Schedule.Schadules.KEY_MONTH, month,
-                    Schedule.Schadules.KEY_DAY, day);
+                    Schedule.Schedules.TABLE_NAME,
+                    Schedule.Schedules.KEY_TITLE, title,
+                    Schedule.Schedules.KEY_SHOUR, sHour,
+                    Schedule.Schedules.KEY_SMIN, sMin,
+                    Schedule.Schedules.KEY_EHOUR, eHour,
+                    Schedule.Schedules.KEY_EMIN, eMin,
+                    Schedule.Schedules.KEY_PLACE, place,
+                    Schedule.Schedules.KEY_MEMO, memo,
+                    Schedule.Schedules.KEY_YEAR, year,
+                    Schedule.Schedules.KEY_MONTH, month,
+                    Schedule.Schedules.KEY_DAY, day);
             getWritableDatabase().execSQL(sql);
         }catch (SQLException e){
-            Log.e(TAG, "Error in updaing recodes");
+            Log.e(TAG, "Error in updating recodes");
         }
     }
 
-    public void deleteSchadule(int year, int month, int day){
+    public void deleteSchedule(int year, int month, int day){
         try{
             String sql = String.format(
                     "DELETE FROM %s WHERE %s = %s AND %s = %s AND %s = %s",
-                    Schedule.Schadules.TABLE_NAME,
-                    Schedule.Schadules.KEY_YEAR, year,
-                    Schedule.Schadules.KEY_MONTH, month,
-                    Schedule.Schadules.KEY_DAY, day);
+                    Schedule.Schedules.TABLE_NAME,
+                    Schedule.Schedules.KEY_YEAR, year,
+                    Schedule.Schedules.KEY_MONTH, month,
+                    Schedule.Schedules.KEY_DAY, day);
             getWritableDatabase().execSQL(sql);
         }catch (SQLException e){
             Log.e(TAG, "Error in deleting recodes");
         }
     }
 
-    public Cursor getAllSchadules(){
-        String sql = "Select * From " + Schedule.Schadules.TABLE_NAME;
+    public Cursor getAllSchedules(){
+        String sql = "Select * From " + Schedule.Schedules.TABLE_NAME;
         return getReadableDatabase().rawQuery(sql,null);
     }
+
 /*
     public String isSchadule(int year, int month, int day){
             String sql = String.format(

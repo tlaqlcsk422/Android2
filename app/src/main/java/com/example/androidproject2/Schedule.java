@@ -8,11 +8,11 @@ public final class Schedule {
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
 
-    //private Schadule() {}
+    //private Schedule() {}
 
     /* Inner class that defines the table contents */
-    public static class Schadules implements BaseColumns {
-        public static final String TABLE_NAME= "Schadules";
+    public static class Schedules implements BaseColumns {
+        public static final String TABLE_NAME= "Schedules";
         public static final int KEY_YEAR = 0;
         public static final int KEY_MONTH = 0;
         public static final int KEY_DAY = 0;
@@ -37,7 +37,8 @@ public final class Schedule {
                 KEY_EMIN + TEXT_TYPE +  COMMA_SEP +
                 KEY_PLACE + TEXT_TYPE +  COMMA_SEP +
                 KEY_MEMO + TEXT_TYPE +
-                " )";
-        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+                " );";
+
+        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME+";";
     }
 }
