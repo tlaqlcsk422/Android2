@@ -2,12 +2,15 @@ package com.example.androidproject2;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
@@ -16,6 +19,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -79,9 +84,30 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 //mMap.setMyLocationEnabled();
             }
         });
-                saveBtn.setOnClickListener(new View.OnClickListener() {
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertRecord();
+                //나가기
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
+        delBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean check=false;
+                //다이어그램 출력/ 확인, 취소 받고 여튼 작성
+                AlertDialog.Builder builder = new AlertDialog.Builder(WriteActivity.this);
+                builder.setTitle("알림");
+                builder.setMessage("일정을 삭제하시겠습니까?");
+                builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteRecord();
                         //나가기
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -89,19 +115,10 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                     }
                 });
 
-        delBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean check=false;
-                //다이어그램 출력/ 확인, 취소 받고 여튼 작성
-                if(check) {
-                    deleteRecord();//함수 작성
-                    //나가기
-                    //삭제
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
+                builder.setNegativeButton("아니오",null);
+                builder.setNeutralButton("취소",null);
+                builder.create().show();
+
             }
         });
 
@@ -158,24 +175,6 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
-    public void saveSql(){//sql 저장 함수
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){//시간 받기
-            sHour=sTimePicker.getHour();
-            sMin=sTimePicker.getMinute();
-            eHour=eTimePicker.getHour();
-            eMin=eTimePicker.getMinute();
-        }
-        else{
-            sHour=sTimePicker.getCurrentHour();
-            sMin=sTimePicker.getCurrentMinute();
-            eHour=eTimePicker.getCurrentHour();
-            eMin=eTimePicker.getCurrentMinute();
-        }
-
-        memoText= String.valueOf(memoTv.getText());//메모 받기
-        subText= String.valueOf(subTv.getText());//제목 받기
-        addressText=String.valueOf(addressTv.getText());//주소 받기
-    }
 
 
 
@@ -209,17 +208,30 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    //sql 저장 함수
     private void insertRecord(){
-        memoText = memoTv.getText().toString();
-        sHour = sTimePicker.getHour();
-        sMin = sTimePicker.getMinute();
-        eHour = eTimePicker.getHour();
-        eMin = eTimePicker.getMinute();
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){//시간 받기
+            sHour=sTimePicker.getHour();
+            sMin=sTimePicker.getMinute();
+            eHour=eTimePicker.getHour();
+            eMin=eTimePicker.getMinute();
+        }
+        else{
+            sHour=sTimePicker.getCurrentHour();
+            sMin=sTimePicker.getCurrentMinute();
+            eHour=eTimePicker.getCurrentHour();
+            eMin=eTimePicker.getCurrentMinute();
+        }
+        memoText= String.valueOf(memoTv.getText());//메모 받기
+        subText= String.valueOf(subTv.getText());//제목 받기
+        addressText=String.valueOf(addressTv.getText());//주소 받기
+
+        //저장
         mDbHelper.insertSchadule(year, month, day, subText,
                 sHour, sMin, eHour, eMin, addressText, memoText);
     }
 
+    //sql 삭제 함수
     private void deleteRecord(){
         mDbHelper.deleteSchadule(year, month, day);
     }
@@ -235,5 +247,17 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 sHour, sMin, eHour, eMin, addressText, memoText);
     }
 
+    private void viewAllRecord(){
+        Cursor cursor = mDbHelper.getAllSchadules();
+
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.text_item, cursor, new String[]{
+                Schedule.Schadules._ID,
+                Schedule.Schadules.KEY_TITLE},
+                new int[]{R.id.text2}, 0);
+
+        ListView lv = (ListView)findViewById(R.id.list_item);
+        lv.setAdapter(adapter);
+
+    }
 
 }

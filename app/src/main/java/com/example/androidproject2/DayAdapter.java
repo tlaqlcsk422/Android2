@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,7 +74,7 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
     @Override
     public View getView ( int position, View view, ViewGroup parent){
         if (view == null) {
-            view = inflater.inflate(R.layout.text_item, parent, false);
+            view = inflater.inflate(R.layout.day_item, parent, false);
             this.view = view;
         }
 
@@ -127,9 +129,20 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
             }
         });
+        /*
+        SchaduleAdapter adapter = new SchaduleAdapter(mContext, "hi");
+
+        // 어탭터 연결
+        ListView listView = (ListView) view.findViewById(R.id.list_item);
+        listView.setAdapter(adapter);
+
+         */
+
 
         return view;
     }
+
+
 
 
     void print(String message){

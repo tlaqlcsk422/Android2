@@ -86,6 +86,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     Schedule.Schadules.KEY_YEAR, year,
                     Schedule.Schadules.KEY_MONTH, month,
                     Schedule.Schadules.KEY_DAY, day);
+            getWritableDatabase().execSQL(sql);
         }catch (SQLException e){
             Log.e(TAG, "Error in deleting recodes");
         }
@@ -104,10 +105,12 @@ public class DBHelper extends SQLiteOpenHelper {
                     Schedule.Schadules.KEY_MONTH, month,
                     Schedule.Schadules.KEY_DAY, day
             );
+
+        Boolean s = getReadableDatabase().rawQuery(sql, null);
         return getReadableDatabase().rawQuery(sql, null);
     }
-
  */
+
 
 }
 
