@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
 
@@ -85,13 +86,29 @@ public class WeekAdapter extends BaseAdapter implements OnItemClickListener{
             public void onClick(View v) {
                 Log.d(TAG, "클릭");
 
-                    print((position/7)+"시");//클릭한 시간
-                if(tempView !=null)//그 전에 선택한 시간 배경을 하얀색으로 변경
+                print((position / 7) + "시");//클릭한 시간
+                if (tempView != null)//그 전에 선택한 시간 배경을 하얀색으로 변경
                     tempView.setBackgroundColor(Color.WHITE);
 
                 tempView = itemTv;//다음을 위해 저장
 
                 itemTv.setBackgroundColor(Color.CYAN);//클릭한 아이템 배경색을 cyan으로 변경
+
+                MainActivity.year = year;
+                int tempMonth=month;
+
+                Calendar cal;
+                cal = Calendar.getInstance();
+                cal.set(year,month,1);
+
+                int tempDate=day+position%7;
+                if(tempDate>cal.getActualMaximum(Calendar.DAY_OF_MONTH)){
+                    tempDate=tempDate-cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+                    tempMonth++;
+                }
+                MainActivity.month=tempMonth;
+                MainActivity.date=tempDate;
+                MainActivity.time=(position / 7);
             }
         });
 

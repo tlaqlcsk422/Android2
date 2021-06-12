@@ -50,8 +50,8 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         Intent intent = getIntent();
         year = intent.getIntExtra("year", -1);
         month = intent.getIntExtra("month", -1);
-        day = intent.getIntExtra("day", -1);
-        time=13;
+        day = intent.getIntExtra("date", -1);
+        time=intent.getIntExtra("time", -1);
         Log.d(TAG, year + ", " + month + ", " + day);
 
 
@@ -66,7 +66,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         findBtn = findViewById(R.id.findMapButton);
         geocoder = new Geocoder(getBaseContext());
 
-        subTv.setText(year+"년 "+(month+1)+"월 "+day+"일 "+time+"시");
+        subTv.setText(year+"년 "+month+"월 "+day+"일 "+time+"시");
 
 
 

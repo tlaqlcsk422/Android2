@@ -120,28 +120,10 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
                 day = (Integer)getItem(position);
 
-               // OnYearMonthSetListener.onYearMonthSet(year, month, day);
-
-                /*정보 전달 위한 intent방법
-                Intent intent = new Intent(mContext, MainActivity.class);
-                intent.putExtra("Year",year);
-                intent.putExtra("Month",month);
-                intent.putExtra("Day",day);
-                setResult(RESULT_OK, intent);
-                finish();
-                 */
-                //interface 방법
-                //getDate.getYearMonthDay(year,month,day);
-                //sharedPreferences 방법
-                /*
-                SharedPreferences pref = mContext.getSharedPreferences("GetDate", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putInt("Year",year);
-                editor.putInt("Month",month);
-                editor.putInt("Day",day);
-                editor.commit();
-
-                 */
+                MainActivity.year=year;
+                MainActivity.month=month;
+                MainActivity.date=day;
+                MainActivity.time=0;
 
             }
         });

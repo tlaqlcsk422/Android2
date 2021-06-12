@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class WeekDateAdapter extends BaseAdapter implements OnItemClickListener{
 
@@ -125,6 +126,24 @@ public class WeekDateAdapter extends BaseAdapter implements OnItemClickListener{
                     print(year + "년" + (month) + "월" + getItem(position) + "일");//토스트 메시지 출력
                     Log.d(TAG, year + "년" + (month) + "월" + getItem(position) + "일");//로그 확인
                     itemTv.setBackgroundColor(Color.CYAN);//색깔 변경
+
+                day = (Integer) getItem(position);
+
+                MainActivity.year = year;
+                int tempMonth=month;
+
+                Calendar cal;
+                cal = Calendar.getInstance();
+                cal.set(year,month,1);
+
+                int tempDate=day+position%7;
+                if(tempDate>cal.getActualMaximum(Calendar.DAY_OF_MONTH)){
+                    tempDate=tempDate-cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+                    tempMonth++;
+                }
+                MainActivity.month=tempMonth;
+                MainActivity.date=tempDate;
+                MainActivity.time=0;
 
             }
         });
