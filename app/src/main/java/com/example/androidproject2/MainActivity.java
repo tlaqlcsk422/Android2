@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ import com.pedro.library.AutoPermissionsListener;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements AutoPermissionsListener{
+public class MainActivity extends AppCompatActivity implements AutoPermissionsListener {
     public static int year1=0,month1=-1,day1=0;
     public static ArrayList<Activity> actList = new ArrayList<Activity>();
 
@@ -135,6 +136,13 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
     public void onGranted(int i, String[] permissions) {
 
     }
+/*
+    @Override
+    public void setOnItemClickListener(AdapterView.OnItemClickListener 클릭) {
+        year1 = year;
+    }
+
+ */
 
 /*
     @Override

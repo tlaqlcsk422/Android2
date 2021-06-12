@@ -60,8 +60,6 @@ public class MonthViewFragment extends Fragment {
             vpPager.setCurrentItem(49);//현재 페이지를 오늘 날짜 position으로 설정
         }
 
-
-
         // Inflate the layout for this fragment
         return rootView;
     }

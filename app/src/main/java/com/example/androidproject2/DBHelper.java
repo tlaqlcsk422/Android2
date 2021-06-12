@@ -105,7 +105,6 @@ public class DBHelper extends SQLiteOpenHelper {
                     Schedule.Schadules.KEY_DAY, day
             );
         return getReadableDatabase().rawQuery(sql, null);
-
     }
 
  */
