@@ -54,7 +54,16 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         Log.d(TAG, year + ", " + month + ", " + day);
 
 
-
+        sTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
+        eTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
+        subTv = findViewById(R.id.subjectText);
+        memoTv = findViewById(R.id.memoText);
+        addressTv = findViewById(R.id.addressEnterText);
+        saveBtn = findViewById(R.id.saveButton);
+        delBtn = findViewById(R.id.deleteButton);
+        escBtn = findViewById(R.id.escButton);
+        findBtn = findViewById(R.id.findMapButton);
+        geocoder = new Geocoder(getBaseContext());
 
 
 
@@ -190,16 +199,6 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void insertRecord(){
-        sTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
-        eTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
-        subTv = findViewById(R.id.subjectText);
-        memoTv = findViewById(R.id.memoText);
-        addressTv = findViewById(R.id.addressEnterText);
-        saveBtn = findViewById(R.id.saveButton);
-        delBtn = findViewById(R.id.deleteButton);
-        escBtn = findViewById(R.id.escButton);
-        findBtn = findViewById(R.id.findMapButton);
-        geocoder = new Geocoder(getBaseContext());
         memoText = memoTv.getText().toString();
         sHour = sTimePicker.getHour();
         sMin = sTimePicker.getMinute();
@@ -215,16 +214,6 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void updateRecord(){
-        sTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
-        eTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
-        subTv = findViewById(R.id.subjectText);
-        memoTv = findViewById(R.id.memoText);
-        addressTv = findViewById(R.id.addressEnterText);
-        saveBtn = findViewById(R.id.saveButton);
-        delBtn = findViewById(R.id.deleteButton);
-        escBtn = findViewById(R.id.escButton);
-        findBtn = findViewById(R.id.findMapButton);
-        geocoder = new Geocoder(getBaseContext());
         memoText = memoTv.getText().toString();
         sHour = sTimePicker.getHour();
         sMin = sTimePicker.getMinute();
