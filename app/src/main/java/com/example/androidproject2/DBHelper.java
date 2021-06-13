@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import static com.example.androidproject2.Schedule.Schedules.TABLE_NAME;
 import static java.sql.Types.NULL;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -23,7 +24,12 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG,getClass().getName() + ".onCreate() ");
-        db.execSQL(Schedule.Schedules.CREATE_TABLE);
+        try {
+            db.execSQL(Schedule.Schedules.CREATE_TABLE);
+        }catch (Exception e){
+            Log.e(TAG, "Error in onCreate");
+        }
+
     }
 
     @Override
@@ -37,8 +43,8 @@ public class DBHelper extends SQLiteOpenHelper {
                                String place, String memo){
         try{
             String sql = String.format(
-                    "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s %s) VALUES(NULL,%d,%d,%d,'%s',%d,%d,%d,%d,'%s','%s')",
-                    Schedule.Schedules.TABLE_NAME,
+                    "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s %s) VALUES(%d,%d,%d,%d,'%s',%d,%d,%d,%d,'%s','%s')",
+                    TABLE_NAME,
                     Schedule.Schedules._ID,
                     Schedule.Schedules.KEY_YEAR,
                     Schedule.Schedules.KEY_MONTH,
@@ -64,7 +70,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             String sql = String.format(
                     "UPDATE %s SET %s = '%s', %s = %d, %s = %d, %s = %d, %s = %d, %s = '%s', %s ='%s' WHERE %s = %d AND %s = %d AND %s = %d",
-                    Schedule.Schedules.TABLE_NAME,
+                    TABLE_NAME,
                     Schedule.Schedules.KEY_TITLE, title,
                     Schedule.Schedules.KEY_SHOUR, sHour,
                     Schedule.Schedules.KEY_SMIN, sMin,
@@ -85,7 +91,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try{
             String sql = String.format(
                     "DELETE FROM %s WHERE %s = '%s' AND %s = %d AND %s = %d AND %s = %d",
-                    Schedule.Schedules.TABLE_NAME,
+                    TABLE_NAME,
                     Schedule.Schedules.KEY_TITLE, title,
                     Schedule.Schedules.KEY_YEAR, year,
                     Schedule.Schedules.KEY_MONTH, month,
@@ -98,7 +104,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getTodaySchedules(int year, int month, int day){
         String sql = "Select "+Schedule.Schedules.KEY_TITLE+" From "+
-                Schedule.Schedules.TABLE_NAME+
+                TABLE_NAME+
                 " WHERE "+ Schedule.Schedules.KEY_YEAR + "=" + year + ","
                 + Schedule.Schedules.KEY_MONTH + "=" + month + ","
                 + Schedule.Schedules.KEY_DAY + "=" + day;
@@ -121,7 +127,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Schedule.Schedules.KEY_PLACE, place);
         values.put(Schedule.Schedules.KEY_MEMO,memo);
 
-        return db.insert(Schedule.Schedules.TABLE_NAME,null,values);
+        return db.insert(TABLE_NAME,null,values);
 
     }
 

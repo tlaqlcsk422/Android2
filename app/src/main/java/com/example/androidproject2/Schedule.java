@@ -38,7 +38,7 @@ public final class Schedule {
                 KEY_EMIN + INTEGER_TYPE +  COMMA_SEP +
                 KEY_PLACE + TEXT_TYPE +  COMMA_SEP +
                 KEY_MEMO + TEXT_TYPE +
-                " );";
+                " )";
 
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME+";";
     }
