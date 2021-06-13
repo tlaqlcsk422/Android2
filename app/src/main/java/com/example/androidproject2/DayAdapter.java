@@ -1,6 +1,7 @@
 package com.example.androidproject2;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         private int height,width;//화면의 높이, 너비
         TextView tempView;
         OnItemClickListener listener;
+        DBHelper mDbHelper;
 
 
     public DayAdapter(Context context, ArrayList < Integer > items, int year, int month, int height, int width) {
@@ -129,15 +132,10 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
             }
         });
-        /*
-        SchaduleAdapter adapter = new SchaduleAdapter(mContext, "hi");
 
-        // 어탭터 연결
-        ListView listView = (ListView) view.findViewById(R.id.list_item);
-        listView.setAdapter(adapter);
 
-         */
 
+        //SchaduleAdapter adapter = new SchaduleAdapter(mContext, "hi");
 
         return view;
     }
@@ -148,5 +146,21 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
     void print(String message){
         Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show();
     }
+/*
+    private void viewAllRecord(){
+        Cursor cursor = mDbHelper.getAllSchedules(year, month, day);
+
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(mContext.getApplicationContext(),
+                R.layout.text_item, cursor, new String[]{
+                Schedule.Schedules.KEY_TITLE},
+                new int[]{R.id.text2}, 0);
+
+        // 어탭터 연결
+        ListView listView = (ListView) view.findViewById(R.id.list_item);
+        listView.setAdapter(adapter);
+    }
+
+ */
+
 
 }   

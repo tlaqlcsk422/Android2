@@ -1,11 +1,13 @@
 package com.example.androidproject2;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -35,8 +37,9 @@ public class DBHelper extends SQLiteOpenHelper {
                                String place, String memo){
         try{
             String sql = String.format(
-                    "INSERT INTO %s(%d %d, %d, %s, %d, %d, %d %d %s %s) VALUES('%s', '%d','%d','%d','%s','%d','%d','%d','%d','%s','%s')",
+                    "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s %s) VALUES(NULL,%d,%d,%d,'%s',%d,%d,%d,%d,'%s','%s')",
                     Schedule.Schedules.TABLE_NAME,
+                    Schedule.Schedules._ID,
                     Schedule.Schedules.KEY_YEAR,
                     Schedule.Schedules.KEY_MONTH,
                     Schedule.Schedules.KEY_DAY,
@@ -47,7 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     Schedule.Schedules.KEY_EMIN,
                     Schedule.Schedules.KEY_PLACE,
                     Schedule.Schedules.KEY_MEMO,
-                    Schedule.DB_NAME,year, month, day, title, sHour, sMin, eHour, eMin, place, memo);
+                    year, month, day, title, sHour, sMin, eHour, eMin, place, memo);
 
             getWritableDatabase().execSQL(sql);
         }catch (SQLException e){
@@ -60,7 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                String place, String memo){
         try {
             String sql = String.format(
-                    "UPDATE %s SET %s = '%s', %d = '%d', %d = '%d', %d = '%d', %d = '%d', %s = '%s', %s ='%s' WHERE %d = '%d' AND %d = '%d' AND %d = '%d'",
+                    "UPDATE %s SET %s = '%s', %s = %d, %s = %d, %s = %d, %s = %d, %s = '%s', %s ='%s' WHERE %s = %d AND %s = %d AND %s = %d",
                     Schedule.Schedules.TABLE_NAME,
                     Schedule.Schedules.KEY_TITLE, title,
                     Schedule.Schedules.KEY_SHOUR, sHour,
@@ -78,11 +81,12 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteSchedule(int year, int month, int day){
+    public void deleteSchedule(String title, int year, int month, int day){
         try{
             String sql = String.format(
-                    "DELETE FROM %s WHERE %s = %s AND %s = %s AND %s = %s",
+                    "DELETE FROM %s WHERE %s = '%s' AND %s = %d AND %s = %d AND %s = %d",
                     Schedule.Schedules.TABLE_NAME,
+                    Schedule.Schedules.KEY_TITLE, title,
                     Schedule.Schedules.KEY_YEAR, year,
                     Schedule.Schedules.KEY_MONTH, month,
                     Schedule.Schedules.KEY_DAY, day);
@@ -92,9 +96,33 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor getAllSchedules(){
-        String sql = "Select * From " + Schedule.Schedules.TABLE_NAME;
+    public Cursor getTodaySchedules(int year, int month, int day){
+        String sql = "Select "+Schedule.Schedules.KEY_TITLE+" From "+
+                Schedule.Schedules.TABLE_NAME+
+                " WHERE "+ Schedule.Schedules.KEY_YEAR + "=" + year + ","
+                + Schedule.Schedules.KEY_MONTH + "=" + month + ","
+                + Schedule.Schedules.KEY_DAY + "=" + day;
         return getReadableDatabase().rawQuery(sql,null);
+    }
+
+    public long insert(int year, int month, int day, String title,
+    int sHour, int sMin, int eHour, int eMin,
+    String place, String memo){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Schedule.Schedules.KEY_YEAR,year);
+        values.put(Schedule.Schedules.KEY_MONTH, month);
+        values.put(Schedule.Schedules.KEY_DAY, day);
+        values.put(Schedule.Schedules.KEY_TITLE, title);
+        values.put(Schedule.Schedules.KEY_SHOUR, sHour);
+        values.put(Schedule.Schedules.KEY_SMIN, sMin);
+        values.put(Schedule.Schedules.KEY_EHOUR, eHour);
+        values.put(Schedule.Schedules.KEY_EMIN, eMin);
+        values.put(Schedule.Schedules.KEY_PLACE, place);
+        values.put(Schedule.Schedules.KEY_MEMO,memo);
+
+        return db.insert(Schedule.Schedules.TABLE_NAME,null,values);
+
     }
 
 /*
@@ -114,4 +142,3 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 }
-

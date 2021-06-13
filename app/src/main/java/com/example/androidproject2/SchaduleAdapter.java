@@ -47,9 +47,9 @@ public class SchaduleAdapter extends BaseAdapter {
             this.view = view;
         }
 
-        TextView schaduleTv = view.findViewById(R.id.text2);
-        schaduleTv.setText("hi");
-        schaduleTv.setBackgroundColor(Color.CYAN);
+        TextView scheduleTv = view.findViewById(R.id.text2);
+        scheduleTv.setText("hi");
+        scheduleTv.setBackgroundColor(Color.CYAN);
 
         return view;
     }

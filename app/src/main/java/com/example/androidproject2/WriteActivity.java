@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
@@ -19,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,12 +44,15 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
     private GoogleMap mMap;
     private static final String TAG = "WriteActivity";
     private DBHelper mDbHelper;
+    SQLiteDatabase mDb;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
+
+
 
         Intent intent = getIntent();
         year = intent.getIntExtra("year", -1);
@@ -69,6 +75,8 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
         subTv.setText(year+"년 "+month+"월 "+day+"일 "+time+"시");
 
+        mDbHelper = new DBHelper(WriteActivity.this);
+        mDb = mDbHelper.getReadableDatabase();
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
@@ -96,7 +104,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onClick(View v) {
                 boolean check=false;
-                //다이어그램 출력/ 확인, 취소 받고 여튼 작성
+                //다이어로그 출력/ 확인, 취소 받고 여튼 작성
                 AlertDialog.Builder builder = new AlertDialog.Builder(WriteActivity.this);
                 builder.setTitle("알림");
                 builder.setMessage("일정을 삭제하시겠습니까?");
@@ -134,6 +142,8 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 findAddress();
             }
         });
+
+
 
 
     }
@@ -222,16 +232,28 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         addressText=String.valueOf(addressTv.getText());//주소 받기
         memoText= String.valueOf(memoTv.getText());//메모 받기
 
+
         Log.d(TAG, year+"년"+ month+"월"+ day+"일"+ subText+sHour+"시"+ sMin+"분"+ eHour+"시"+ eMin+"분"+ addressText+ memoText);
 
         //저장
+        /*
         mDbHelper.insertSchedule(year, month, day, subText,
                 sHour, sMin, eHour, eMin, addressText, memoText);
+
+         */
+
+        long nOfRows = mDbHelper.insert(year, month, day, subText,
+                sHour, sMin, eHour, eMin, addressText, memoText);
+        if (nOfRows >0)
+            Toast.makeText(this,nOfRows+" Record Inserted", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(this,"No Record Inserted", Toast.LENGTH_SHORT).show();
     }
 
     //sql 삭제 함수
     private void deleteRecord(){
-        mDbHelper.deleteSchedule(year, month, day);
+
+        mDbHelper.deleteSchedule(subText, year, month, day);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -246,16 +268,19 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
     }
 
     private void viewAllRecord(){
-        Cursor cursor = mDbHelper.getAllSchedules();
+        Cursor cursor = mDbHelper.getTodaySchedules(year, month, day);
 
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getApplicationContext(), R.layout.text_item, cursor, new String[]{
-                Schedule.Schedules._ID,
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getApplicationContext(),
+                R.layout.text_item, cursor, new String[]{
                 Schedule.Schedules.KEY_TITLE},
                 new int[]{R.id.text2}, 0);
+
 
         ListView lv = (ListView)findViewById(R.id.list_item);
         lv.setAdapter(adapter);
 
     }
+
+
 
 }
