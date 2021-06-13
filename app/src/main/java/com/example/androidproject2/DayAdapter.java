@@ -101,6 +101,8 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
         if(items.get(position) == null) {//null 확인 후에 공백 문자 넣음
             dayTv.setText("");
+            int oneday = (Integer)getItem(position);
+            loadTitle(oneday);
         } else {
             dayTv.setText(items.get(position) + "");//String 으로 해야해서 +"" 추가함
 
@@ -140,8 +142,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
             }
         });
 
-        loadTitle();
-
 
         SchaduleAdapter adapter = new SchaduleAdapter(mContext, title);
         // 어탭터 연결
@@ -152,9 +152,9 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
     }
 
 
-    private void loadTitle() {
+    private void loadTitle(int oneday) {
         String sql = "SELECT * FROM " + TABLE_NAME +
-                " WHERE " + KEY_YEAR + "=" + year + "," + KEY_MONTH + "=" + month + "," + KEY_DAY + "=" + day;
+                " WHERE " + KEY_YEAR + "=" + year + "," + KEY_MONTH + "=" + month + "," + KEY_DAY + "=" + oneday;
 
         Log.d(TAG,year+"/"+month+"/"+day);
         int recordCount = -1;
