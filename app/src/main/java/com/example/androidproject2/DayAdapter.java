@@ -38,6 +38,10 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         OnItemClickListener listener;
         private ScheduleDataBase scheduleDataBase;
         ScheduleDataBase mDb;
+        private ArrayList<Integer> Years = new ArrayList<>();
+        private ArrayList<Integer> Months = new ArrayList<>();
+        private ArrayList<Integer> Days = new ArrayList<>();
+        int count= 0;
 
 
     public DayAdapter(Context context, ArrayList < Integer > items, int year, int month, int height, int width) {
@@ -99,8 +103,13 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         } else {
             dayTv.setText(items.get(position) + "");//String 으로 해야해서 +"" 추가함
 
-            int oneDay = (Integer)getItem(position);
-            loadTitle(oneDay);
+            int oneday = (Integer) getItem(position);
+
+            for(int i=0; i<count; i++) {
+                if (Years.get(i) == year && Months.get(i) == month && Days.get(i) == oneday) {
+                    loadTitle(oneday);
+                }
+            }
 
             if(tempView != null)
                 tempView.setBackgroundColor(Color.CYAN);
@@ -182,7 +191,36 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show();
     }
 
+    private void loadData() {
+        String sql = "SELECT * FROM " + TABLE_NAME ;
 
+        Log.d(TAG,year+"/"+month+"/"+day);
+        int recordCount = -1;
+        ScheduleDataBase database = ScheduleDataBase.getInstance(mContext);
+
+
+        if (database != null) {
+            Cursor outCursor = database.rawQuery(sql);
+            recordCount = outCursor.getCount();
+
+            for (int i = 0; i < recordCount; i++) {
+                outCursor.moveToNext();
+
+                int _id = outCursor.getInt(0);
+                int getYear = outCursor.getInt(1);
+                int getMonth = outCursor.getInt(2);
+                int getDay = outCursor.getInt(3);
+
+                Years.add(getYear);
+                Months.add(getMonth);
+                Days.add(getDay);
+
+                //Log.d(TAG, "#" + i + " -> " + _id + ", " + getTitle);
+            }
+
+        }
+
+    }
 
 
 }   
