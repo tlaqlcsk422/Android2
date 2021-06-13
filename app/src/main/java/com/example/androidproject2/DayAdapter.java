@@ -152,23 +152,19 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
     }
 
 
-
-
-    void print(String message){
-        Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show();
-    }
-
     private void loadTitle() {
-        String sql = "SELECT id " + KEY_TITLE + " FROM " +
-                TABLE_NAME +
-                " WHERE " + KEY_YEAR + "=" + year + "," + KEY_MONTH + "=" + month + "," +
-                KEY_DAY + "=" + day;
+        String sql = "SELECT * FROM " + TABLE_NAME +
+                " WHERE " + KEY_YEAR + "=" + year + "," + KEY_MONTH + "=" + month + "," + KEY_DAY + "=" + day;
+
+        Log.d(TAG,year+"/"+month+"/"+day);
         int recordCount = -1;
         ScheduleDataBase database = ScheduleDataBase.getInstance(mContext);
 
 
         if (database != null) {
             Cursor outCursor = database.rawQuery(sql);
+            recordCount = outCursor.getCount();
+
             for (int i = 0; i < recordCount; i++) {
                 outCursor.moveToNext();
 
@@ -179,11 +175,16 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
                 Log.d(TAG, "#" + i + " -> " + _id + ", " + getTitle);
             }
-            outCursor.close();
 
         }
 
     }
+
+
+    void print(String message){
+        Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show();
+    }
+
 
 
 

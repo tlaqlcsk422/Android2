@@ -143,16 +143,6 @@ public class ScheduleDataBase {
             } catch (Exception e) {
                 Log.e(TAG, "Error in onCreate");
             }
-
-            /*String CREATE_INDEX_SQL = "create index " + TABLE_NAME + "_IDX on "
-                    + TABLE_NAME + "(" + "CREATE_DATE" + ")";
-
-            try {
-                db.execSQL(CREATE_INDEX_SQL);
-            } catch (Exception e) {
-                Log.e(TAG, "Exception in CREATE_INDEX_SQL", e);
-            }
-            */
         }
 
 
