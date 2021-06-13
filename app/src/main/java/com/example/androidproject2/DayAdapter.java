@@ -74,12 +74,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         return position;
     }
 
-/*
-    public interface OnYearMonthSetListener{
-        void onYearMonthSet(int year, int month, int day);
-    }
-
- */
 
     @Override
     public View getView ( int position, View view, ViewGroup parent){
@@ -105,8 +99,8 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         } else {
             dayTv.setText(items.get(position) + "");//String 으로 해야해서 +"" 추가함
 
-            int oneday = (Integer)getItem(position);
-            loadTitle(oneday);
+            int oneDay = (Integer)getItem(position);
+            loadTitle(oneDay);
 
             if(tempView != null)
                 tempView.setBackgroundColor(Color.CYAN);
@@ -154,11 +148,11 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
     }
 
 
-    private void loadTitle(int oneday) {
+    private void loadTitle(int oneDay) {
         String sql = "SELECT * FROM " + TABLE_NAME +
-                " WHERE " + KEY_YEAR + "=" + year + "AND" + KEY_MONTH + "=" + month + "AND" + KEY_DAY + "=" + oneday;
+                " WHERE " + KEY_YEAR + "=" + year + " AND " + KEY_MONTH + "=" + month + " AND " + KEY_DAY + "=" + oneDay;
 
-        Log.d(TAG,year+"/"+month+"/"+day);
+        //Log.d(TAG,year+"/"+month+"/"+day);
         int recordCount = -1;
         ScheduleDataBase database = ScheduleDataBase.getInstance(mContext);
 
