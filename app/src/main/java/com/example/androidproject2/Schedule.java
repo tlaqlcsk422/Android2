@@ -27,7 +27,7 @@ public final class Schedule {
 
 
         public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
-                _ID + " INTEGER PRIMARY KEY " + COMMA_SEP +
+                " id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT " + COMMA_SEP +
                 KEY_YEAR + INTEGER_TYPE + COMMA_SEP +
                 KEY_MONTH + INTEGER_TYPE +  COMMA_SEP +
                 KEY_DAY + INTEGER_TYPE +  COMMA_SEP +

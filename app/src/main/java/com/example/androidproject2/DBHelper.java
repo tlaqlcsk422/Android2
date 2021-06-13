@@ -43,9 +43,8 @@ public class DBHelper extends SQLiteOpenHelper {
                                String place, String memo){
         try{
             String sql = String.format(
-                    "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s %s) VALUES(%d,%d,%d,%d,'%s',%d,%d,%d,%d,'%s','%s')",
+                    "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s %s) VALUES(%d,%d,%d,'%s',%d,%d,%d,%d,'%s','%s')",
                     TABLE_NAME,
-                    Schedule.Schedules._ID,
                     Schedule.Schedules.KEY_YEAR,
                     Schedule.Schedules.KEY_MONTH,
                     Schedule.Schedules.KEY_DAY,
