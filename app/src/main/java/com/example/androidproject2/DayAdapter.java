@@ -143,6 +143,7 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         // 어탭터 연결
         ListView listView = (ListView) view.findViewById(R.id.list_item);
         listView.setAdapter(adapter);
+        
 
         return view;
     }
