@@ -5,9 +5,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Address;
@@ -30,23 +32,37 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
-import static com.example.androidproject2.Schedule.Schedules.TABLE_NAME;
+import static com.example.androidproject2.ScheduleDataBase.KEY_DAY;
+import static com.example.androidproject2.ScheduleDataBase.KEY_EHOUR;
+import static com.example.androidproject2.ScheduleDataBase.KEY_EMIN;
+import static com.example.androidproject2.ScheduleDataBase.KEY_MEMO;
+import static com.example.androidproject2.ScheduleDataBase.KEY_MONTH;
+import static com.example.androidproject2.ScheduleDataBase.KEY_PLACE;
+import static com.example.androidproject2.ScheduleDataBase.KEY_SHOUR;
+import static com.example.androidproject2.ScheduleDataBase.KEY_SMIN;
+import static com.example.androidproject2.ScheduleDataBase.KEY_TITLE;
+import static com.example.androidproject2.ScheduleDataBase.KEY_YEAR;
+import static com.example.androidproject2.ScheduleDataBase.TABLE_NAME;
 
 public class WriteActivity extends AppCompatActivity implements OnMapReadyCallback {
     private Button saveBtn, delBtn, escBtn, findBtn;
     private TimePicker sTimePicker, eTimePicker;
     private EditText subTv, memoTv, addressTv;
-    private String subText, memoText, addressText, date, sDate, eDate;
+    private String subText, memoText, addressText, date, sDate, eDate, title;
     private int sHour, sMin, eHour, eMin, year, month, day, time;
     private Geocoder geocoder;
     private List<Address> addressList = null;
     private GoogleMap mMap;
     private static final String TAG = "WriteActivity";
-    private DBHelper mDbHelper;
-    SQLiteDatabase mDb;
+    private Context context;
+    private ScheduleDataBase scheduleDataBase;
+    ScheduleDataBase mDb;
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -54,7 +70,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
 
-
+        context=this;
 
         Intent intent = getIntent();
         year = intent.getIntExtra("year", -1);
@@ -77,8 +93,10 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
         subTv.setText(year+"년 "+month+"월 "+day+"일 "+time+"시");
 
-        mDbHelper = new DBHelper(WriteActivity.this);
-        mDb = mDbHelper.getReadableDatabase();
+        title=String.valueOf(subTv.getText());
+
+        scheduleDataBase= new ScheduleDataBase(WriteActivity.this);
+        mDb = scheduleDataBase.getInstance(WriteActivity.this);
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
@@ -150,7 +168,6 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
-
     public void findAddress(){//지도 찾기 함수
         addressText= String.valueOf(addressTv.getText());
         Log.d(TAG,addressText);
@@ -183,9 +200,6 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
-
-
-
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap=googleMap;
@@ -217,7 +231,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
     }
 
     //sql 저장 함수
-    private void insertRecord(){
+    private void save(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){//시간 받기
             sHour=sTimePicker.getHour();
             sMin=sTimePicker.getMinute();
@@ -237,52 +251,48 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
         Log.d(TAG, year+"년"+ month+"월"+ day+"일"+ subText+sHour+"시"+ sMin+"분"+ eHour+"시"+ eMin+"분"+ addressText+ memoText);
 
-        //저장
-        /*
-        mDbHelper.insertSchedule(year, month, day, subText,
-                sHour, sMin, eHour, eMin, addressText, memoText);
+        String Insert_SQL = String.format(
+                "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s %s) VALUES(%d,%d,%d,'%s',%d,%d,%d,%d,'%s','%s')",
+                TABLE_NAME,
+                KEY_YEAR,
+                KEY_MONTH,
+                KEY_DAY,
+                KEY_TITLE,
+                KEY_SHOUR,
+                KEY_SMIN,
+                KEY_EHOUR,
+                KEY_EMIN,
+                KEY_PLACE,
+                KEY_MEMO,
+                year, month, day, title, sHour, sMin, eHour, eMin, addressText, memoText);
+        try {
+        mDb.exeSQL(Insert_SQL);
+        } catch (SQLException e) {
+            Log.e(TAG, "Error in inserting recodes");
+        }
 
-         */
-
-        long nOfRows = mDbHelper.insert(year, month, day, subText,
-                sHour, sMin, eHour, eMin, addressText, memoText);
-        if (nOfRows >0)
-            Toast.makeText(this,nOfRows+" Record Inserted", Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(this,"No Record Inserted", Toast.LENGTH_SHORT).show();
     }
 
     //sql 삭제 함수
     private void deleteRecord(){
+        String delete_SQL = String.format(
+                "DELETE FROM %s WHERE %s = '%s' AND %s = %d AND %s = %d AND %s = %d",
+                TABLE_NAME,
+                KEY_TITLE, title,
+                KEY_YEAR, year,
+                KEY_MONTH, month,
+                KEY_DAY, day);
 
-        mDbHelper.deleteSchedule(subText, year, month, day);
+        try{
+            mDb.exeSQL(delete_SQL);
+        } catch (SQLException e) {
+            Log.e(TAG, "Error in updating recodes");
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void updateRecord(){
-        memoText = memoTv.getText().toString();
-        sHour = sTimePicker.getHour();
-        sMin = sTimePicker.getMinute();
-        eHour = eTimePicker.getHour();
-        eMin = eTimePicker.getMinute();
-        mDbHelper.updateSchedule(year, month, day, subText,
-                sHour, sMin, eHour, eMin, addressText, memoText);
-    }
 
-    private void viewAllRecord(){
-        Cursor cursor = mDbHelper.getTodaySchedules(year, month, day);
-
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getApplicationContext(),
-                R.layout.text_item, cursor, new String[]{
-                Schedule.Schedules.KEY_TITLE},
-                new int[]{R.id.text2}, 0);
-
-        ListView lv = (ListView)findViewById(R.id.list_item);
-        lv.setAdapter(adapter);
-
-    }
-
-    private void save(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){//시간 받기
             sHour=sTimePicker.getHour();
             sMin=sTimePicker.getMinute();
@@ -299,15 +309,38 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         addressText=String.valueOf(addressTv.getText());//주소 받기
         memoText= String.valueOf(memoTv.getText());//메모 받기
 
-        String sql = "INSERT INTO "+Schedule.Schedules.TABLE_NAME+
-                "('year','month','day','title','sHour','sMin','eHour','eMin'," +
-                "'place','memo') values("+year +","+month+","+day+","+
-                "'"+subText+"',"+sHour+","+sMin+","+eHour+","+ eMin +"," +
-                "'"+addressText+"','"+memoText+"')";
-        Log.d(TAG,"sql : "+sql);
+        String update_SQL = String.format(
+                "UPDATE %s SET %s = '%s', %s = %d, %s = %d, %s = %d, %s = %d, %s = '%s', %s ='%s' WHERE %s = %d AND %s = %d AND %s = %d",
+                TABLE_NAME,
+                KEY_TITLE, title,
+                KEY_SHOUR, sHour,
+                KEY_SMIN, sMin,
+                KEY_EHOUR, eHour,
+                KEY_EMIN, eMin,
+                KEY_PLACE, addressText,
+                KEY_MEMO, memoText,
+                KEY_YEAR, year,
+                KEY_MONTH, month,
+                KEY_DAY, day);
 
-        mDbHelper.insertSchedule(sql);
+        try {
+            mDb.exeSQL(update_SQL);
+        } catch (SQLException e) {
+            Log.e(TAG, "Error in updating recodes");
+        }
     }
+/*
+    private void viewAllRecord(){
+        Cursor cursor = scheduleDataBase.getTodaySchedules(year, month, day);
 
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getApplicationContext(),
+                R.layout.text_item, cursor, new String[]{
+                KEY_TITLE},
+                new int[]{R.id.text2}, 0);
+
+        ListView lv = (ListView)findViewById(R.id.list_item);
+        lv.setAdapter(adapter);
+    }
+    */
 
 }
