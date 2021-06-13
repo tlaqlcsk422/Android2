@@ -108,21 +108,6 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
         }
     }
 
-/*
-    private void viewAllToTextView() {
-        Cursor cursor = ScheduleDataBase.getAllSchedules();
-
-        StringBuffer buffer = new StringBuffer();
-        while (cursor.moveToNext()) {
-            buffer.append(cursor.getInt(0)+" \t");
-            buffer.append(cursor.getString(1)+" \t");
-            buffer.append(cursor.getString(2)+"\n");
-        }
-        Log.d(TAG,buffer);
-    }
-
- */
-
     @Override
     public void onDenied(int i, String[] permissions) {
 

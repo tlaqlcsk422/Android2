@@ -362,20 +362,4 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         }
 
     }
-
-
-/*
-    private void viewAllRecord(){
-        Cursor cursor = scheduleDataBase.getTodaySchedules(year, month, day);
-
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getApplicationContext(),
-                R.layout.text_item, cursor, new String[]{
-                KEY_TITLE},
-                new int[]{R.id.text2}, 0);
-
-        ListView lv = (ListView)findViewById(R.id.list_item);
-        lv.setAdapter(adapter);
-    }
-    */
-
 }

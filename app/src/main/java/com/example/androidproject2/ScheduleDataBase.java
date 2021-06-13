@@ -192,22 +192,6 @@ public class ScheduleDataBase {
         }
 
     }
-
-    /*
-    public static Cursor getAllSchedules(){
-        dbHelper = new DBHelper(context);
-        db = dbHelper.getWritableDatabase();
-
-        String sql = "SELECT * FROM " + TABLE_NAME;
-        return dbHelper.query(TABLE_NAME,null,null,null,null,null,null);
-    }
-
-
-     */
-
-
-
-
     private void println(String msg){
         Log.d(TAG,msg);
     }
