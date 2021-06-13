@@ -65,7 +65,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         return position;
     }
 
-
 /*
     public interface OnYearMonthSetListener{
         void onYearMonthSet(int year, int month, int day);

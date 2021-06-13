@@ -10,6 +10,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.time.DayOfWeek;
+
 public class ScheduleDataBase {
     private static final String TAG="Database";
 
@@ -153,6 +155,8 @@ public class ScheduleDataBase {
             */
         }
 
+
+
         public Cursor getTodaySchedules(int year, int month, int day) {
             String sql = "Select " + KEY_TITLE + " From " +
                     TABLE_NAME +
@@ -198,6 +202,18 @@ public class ScheduleDataBase {
         }
 
     }
+
+    /*
+    public static Cursor getAllSchedules(){
+        dbHelper = new DBHelper(context);
+        db = dbHelper.getWritableDatabase();
+
+        String sql = "SELECT * FROM " + TABLE_NAME;
+        return dbHelper.query(TABLE_NAME,null,null,null,null,null,null);
+    }
+
+
+     */
 
 
 

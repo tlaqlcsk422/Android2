@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.location.Address;
 import android.location.Geocoder;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 
+import static com.example.androidproject2.ScheduleDataBase.DATABASE_VERSION;
 import static com.example.androidproject2.ScheduleDataBase.KEY_DAY;
 import static com.example.androidproject2.ScheduleDataBase.KEY_EHOUR;
 import static com.example.androidproject2.ScheduleDataBase.KEY_EMIN;
@@ -86,6 +88,8 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         subTv.setText(year+"년 "+month+"월 "+day+"일 "+time+"시");
 
         title=String.valueOf(subTv.getText());
+
+        loadData();
 
         scheduleDataBase= new ScheduleDataBase(WriteActivity.this);
         mDb = scheduleDataBase.getInstance(WriteActivity.this);
@@ -267,6 +271,8 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
     //sql 삭제 함수
     private void deleteRecord(){
+        subText= String.valueOf(subTv.getText());//제목 받기
+
         String delete_SQL = String.format(
                 "DELETE FROM %s WHERE %s = '%s' AND %s = %d AND %s = %d AND %s = %d",
                 TABLE_NAME,
@@ -321,6 +327,45 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
             Log.e(TAG, "Error in updating recodes");
         }
     }
+
+    private void loadData(){
+        mDb = ScheduleDataBase.getInstance(this);
+
+        String sql = "SELECT * FROM " +
+                TABLE_NAME +
+                " WHERE " + KEY_YEAR + "=" + year + ","
+                + KEY_MONTH + "=" + month + ","
+                + KEY_DAY + "=" + day;
+        int i=0;
+        if(mDb != null){
+            Cursor cursor = mDb.rawQuery(sql);
+            do{
+                cursor.moveToNext();
+            }while(i<11);
+
+            String getYear = cursor.getString(1);
+            String getMonth = cursor.getString(2);
+            String getDay = cursor.getString(3);
+            String getTitle = cursor.getString(4);
+            String getSHour = cursor.getString(5);
+            String getSMin = cursor.getString(6);
+            String getEHour = cursor.getString(7);
+            String getEMin = cursor.getString(8);
+            String getPlace = cursor.getString(9);
+            String getMemo = cursor.getString(10);
+
+            subTv.setText(getTitle);
+            //sHour.sTimePicker.setHour();
+            addressTv.setText(getPlace);
+            memoTv.setText(getMemo);
+
+            cursor.close();
+
+        }
+
+    }
+
+
 /*
     private void viewAllRecord(){
         Cursor cursor = scheduleDataBase.getTodaySchedules(year, month, day);

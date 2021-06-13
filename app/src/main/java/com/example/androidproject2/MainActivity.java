@@ -9,7 +9,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements AutoPermissionsListener {
     public static int year=0,month=-1,date=0,time=0;
     public static ArrayList<Activity> actList = new ArrayList<Activity>();
-
+    private static final String TAG="Main Activity";
 
 
     @Override
@@ -100,6 +102,20 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
         }
     }
 
+/*
+    private void viewAllToTextView() {
+        Cursor cursor = ScheduleDataBase.getAllSchedules();
+
+        StringBuffer buffer = new StringBuffer();
+        while (cursor.moveToNext()) {
+            buffer.append(cursor.getInt(0)+" \t");
+            buffer.append(cursor.getString(1)+" \t");
+            buffer.append(cursor.getString(2)+"\n");
+        }
+        Log.d(TAG,buffer);
+    }
+
+ */
 
     @Override
     public void onDenied(int i, String[] permissions) {
