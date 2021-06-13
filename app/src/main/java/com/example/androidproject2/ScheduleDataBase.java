@@ -137,7 +137,7 @@ public class ScheduleDataBase {
                     " )";
 
 
-            Log.d(TAG, getClass().getName() + ".onCreate() ");
+            //Log.d(TAG, getClass().getName() + ".onCreate() ");
             try {
                 db.execSQL(CREATE_SQL);
             } catch (Exception e) {

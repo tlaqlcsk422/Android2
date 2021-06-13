@@ -108,7 +108,10 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                save();
+                if(_id==-1)
+                    save();
+                else
+                    updateRecord();
                 //나가기
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -119,25 +122,27 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         delBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean check=false;
-                //다이어로그 출력/ 확인, 취소 받고 여튼 작성
-                AlertDialog.Builder builder = new AlertDialog.Builder(WriteActivity.this);
-                builder.setTitle("알림");
-                builder.setMessage("일정을 삭제하시겠습니까?");
-                builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        deleteRecord();
-                        //나가기
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    }
-                });
+                if(_id!=-1) {
+                    boolean check = false;
+                    //다이어로그 출력/ 확인, 취소 받고 여튼 작성
+                    AlertDialog.Builder builder = new AlertDialog.Builder(WriteActivity.this);
+                    builder.setTitle("알림");
+                    builder.setMessage("일정을 삭제하시겠습니까?");
+                    builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            deleteRecord();
+                            //나가기
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
+                    });
 
-                builder.setNegativeButton("아니오",null);
-                builder.setNeutralButton("취소",null);
-                builder.create().show();
+                    builder.setNegativeButton("아니오", null);
+                    builder.setNeutralButton("취소", null);
+                    builder.create().show();
+                }
 
             }
         });
@@ -270,12 +275,8 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         subText= String.valueOf(subTv.getText());//제목 받기
 
         String delete_SQL = String.format(
-                "DELETE FROM %s WHERE %s = '%s' AND %s = %d AND %s = %d AND %s = %d",
-                TABLE_NAME,
-                KEY_TITLE, title,
-                KEY_YEAR, year,
-                KEY_MONTH, month,
-                KEY_DAY, day);
+                "DELETE FROM %s WHERE id=%d",
+                TABLE_NAME, _id);
 
         try{
             mDb.execSQL(delete_SQL);
@@ -284,6 +285,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         }
     }
 
+    //sql 업데이트 함수
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void updateRecord(){
 
@@ -304,7 +306,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         memoText= String.valueOf(memoTv.getText());//메모 받기
 
         String update_SQL = String.format(
-                "UPDATE %s SET %s = '%s', %s = %d, %s = %d, %s = %d, %s = %d, %s = '%s', %s ='%s' WHERE %s = %d AND %s = %d AND %s = %d",
+                "UPDATE %s SET %s = '%s', %s = %d, %s = %d, %s = %d, %s = %d, %s = '%s', %s ='%s' WHERE id=%d",
                 TABLE_NAME,
                 KEY_TITLE, title,
                 KEY_SHOUR, sHour,
@@ -313,9 +315,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 KEY_EMIN, eMin,
                 KEY_PLACE, addressText,
                 KEY_MEMO, memoText,
-                KEY_YEAR, year,
-                KEY_MONTH, month,
-                KEY_DAY, day);
+                _id);
 
         try {
             mDb.execSQL(update_SQL);

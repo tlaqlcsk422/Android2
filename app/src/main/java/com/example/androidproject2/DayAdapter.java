@@ -30,7 +30,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         private final Context mContext;
         private LayoutInflater inflater;
         private ArrayList<Integer> items = new ArrayList<Integer>();//일(1~31)을 저장할 벡터
-        private ArrayList<String> title = new ArrayList<>();
         private View view;
         private int year,month, day;
         private int height,width;//화면의 높이, 너비
@@ -41,7 +40,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         private ArrayList<Integer> Years = new ArrayList<>();
         private ArrayList<Integer> Months = new ArrayList<>();
         private ArrayList<Integer> Days = new ArrayList<>();
-        int count= 0;
 
 
     public DayAdapter(Context context, ArrayList < Integer > items, int year, int month, int height, int width) {
@@ -86,7 +84,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
             this.view = view;
         }
 
-
         TextView dayTv = view.findViewById(R.id.text);//시작 문자는 대문자 X 소문자로 시작
 
         //화면 가로 세로에 따른 아이템 높이조정
@@ -94,8 +91,9 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         if(width<height) { //세로일때
             dayTv.setHeight(253);
         }
-        else
+        else {
             dayTv.setHeight(135);
+        }
 
         if(items.get(position) == null) {//null 확인 후에 공백 문자 넣음
             dayTv.setText("");
@@ -103,11 +101,20 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         } else {
             dayTv.setText(items.get(position) + "");//String 으로 해야해서 +"" 추가함
 
-            int oneday = (Integer) getItem(position);
+            int oneDay = (Integer) getItem(position);
+            loadData();
+            for(int i=0; i<2&&i<Years.size(); i++) {
+                Log.d(TAG,Years.get(i)+"/"+Months.get(i)+"/"+Days.get(i)+"    "+year+"/"+month+"/"+oneDay);
 
-            for(int i=0; i<count; i++) {
-                if (Years.get(i) == year && Months.get(i) == month && Days.get(i) == oneday) {
-                    loadTitle(oneday);
+                if (Years.get(i) == year && Months.get(i) == month && Days.get(i) == oneDay) {
+                    ArrayList<String> title = new ArrayList<String>();
+                    title=loadTitle(oneDay);
+
+                    Log.d(TAG,year+"/"+month+"/"+oneDay+title);
+                    SchaduleAdapter adapter = new SchaduleAdapter(mContext, title);
+                    // 어탭터 연결
+                    ListView listView = (ListView) view.findViewById(R.id.list_item);
+                    listView.setAdapter(adapter);
                 }
             }
 
@@ -122,8 +129,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
                 dayTv.setTextColor(Color.BLUE);
 
         }
-        //Log.d(TAG, items.get(position) + ", "+dayTv.getText());
-
         dayTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,26 +151,18 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
             }
         });
-
-
-        SchaduleAdapter adapter = new SchaduleAdapter(mContext, title);
-        // 어탭터 연결
-        ListView listView = (ListView) view.findViewById(R.id.list_item);
-        listView.setAdapter(adapter);
-        
-
         return view;
     }
 
 
-    private void loadTitle(int oneDay) {
+    private ArrayList<String> loadTitle(int oneDay) {
+
+        ArrayList<String> title = new ArrayList<>();
         String sql = "SELECT * FROM " + TABLE_NAME +
                 " WHERE " + KEY_YEAR + "=" + year + " AND " + KEY_MONTH + "=" + month + " AND " + KEY_DAY + "=" + oneDay;
 
-        //Log.d(TAG,year+"/"+month+"/"+day);
         int recordCount = -1;
         ScheduleDataBase database = ScheduleDataBase.getInstance(mContext);
-
 
         if (database != null) {
             Cursor outCursor = database.rawQuery(sql);
@@ -173,54 +170,40 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
             for (int i = 0; i < recordCount; i++) {
                 outCursor.moveToNext();
-
                 int _id = outCursor.getInt(0);
-                String getTitle = outCursor.getString(1);
-
+                String getTitle = outCursor.getString(4);
                 title.add(getTitle);
-
                 Log.d(TAG, "#" + i + " -> " + _id + ", " + getTitle);
             }
-
         }
+        return title;
+    }
 
+
+    private void loadData() {
+        String sql = "SELECT * FROM " + TABLE_NAME ;
+        int recordCount = -1;
+        ScheduleDataBase database = ScheduleDataBase.getInstance(mContext);
+        if (database != null) {
+            Cursor outCursor = database.rawQuery(sql);
+            recordCount = outCursor.getCount();
+
+            for (int i = 0; i < recordCount; i++) {
+                outCursor.moveToNext();
+                int getYear = outCursor.getInt(1);
+                int getMonth = outCursor.getInt(2);
+                int getDay = outCursor.getInt(3);
+                Years.add(getYear);
+                Months.add(getMonth);
+                Days.add(getDay);
+            }
+            outCursor.close();
+        }
     }
 
 
     void print(String message){
         Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show();
     }
-
-    private void loadData() {
-        String sql = "SELECT * FROM " + TABLE_NAME ;
-
-        Log.d(TAG,year+"/"+month+"/"+day);
-        int recordCount = -1;
-        ScheduleDataBase database = ScheduleDataBase.getInstance(mContext);
-
-
-        if (database != null) {
-            Cursor outCursor = database.rawQuery(sql);
-            recordCount = outCursor.getCount();
-
-            for (int i = 0; i < recordCount; i++) {
-                outCursor.moveToNext();
-
-                int _id = outCursor.getInt(0);
-                int getYear = outCursor.getInt(1);
-                int getMonth = outCursor.getInt(2);
-                int getDay = outCursor.getInt(3);
-
-                Years.add(getYear);
-                Months.add(getMonth);
-                Days.add(getDay);
-
-                //Log.d(TAG, "#" + i + " -> " + _id + ", " + getTitle);
-            }
-
-        }
-
-    }
-
 
 }   
