@@ -29,7 +29,6 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         private int height,width;//화면의 높이, 너비
         TextView tempView;
         OnItemClickListener listener;
-        DBHelper mDbHelper;
 
 
     public DayAdapter(Context context, ArrayList < Integer > items, int year, int month, int height, int width) {

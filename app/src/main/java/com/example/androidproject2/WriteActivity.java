@@ -8,10 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
@@ -20,10 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,9 +26,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import static com.example.androidproject2.ScheduleDataBase.KEY_DAY;
@@ -252,7 +244,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         Log.d(TAG, year+"년"+ month+"월"+ day+"일"+ subText+sHour+"시"+ sMin+"분"+ eHour+"시"+ eMin+"분"+ addressText+ memoText);
 
         String Insert_SQL = String.format(
-                "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s %s) VALUES(%d,%d,%d,'%s',%d,%d,%d,%d,'%s','%s')",
+                "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES(%d,%d,%d,'%s',%d,%d,%d,%d,'%s','%s')",
                 TABLE_NAME,
                 KEY_YEAR,
                 KEY_MONTH,
@@ -266,7 +258,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 KEY_MEMO,
                 year, month, day, title, sHour, sMin, eHour, eMin, addressText, memoText);
         try {
-        mDb.exeSQL(Insert_SQL);
+        mDb.execSQL(Insert_SQL);
         } catch (SQLException e) {
             Log.e(TAG, "Error in inserting recodes");
         }
@@ -284,7 +276,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 KEY_DAY, day);
 
         try{
-            mDb.exeSQL(delete_SQL);
+            mDb.execSQL(delete_SQL);
         } catch (SQLException e) {
             Log.e(TAG, "Error in updating recodes");
         }
@@ -324,7 +316,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 KEY_DAY, day);
 
         try {
-            mDb.exeSQL(update_SQL);
+            mDb.execSQL(update_SQL);
         } catch (SQLException e) {
             Log.e(TAG, "Error in updating recodes");
         }

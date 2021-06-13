@@ -23,7 +23,7 @@ public class ScheduleDataBase {
     public static final String DB_NAME = "schedule.db";
     public static final String TEXT_TYPE = " TEXT";
     public static final String INTEGER_TYPE = " INTEGER";
-    public static final String COMMA_SEP = ",";
+    public static final String COMMA_SEP = ", ";
 
     public static final String TABLE_NAME= "Schedules";
     public static final String KEY_YEAR = "year";
@@ -85,7 +85,7 @@ public class ScheduleDataBase {
         return cursor;
     }
 
-    public boolean exeSQL(String SQL){
+    public boolean execSQL(String SQL){
         println("\nexecuteQuery called\n");
 
         try{
@@ -142,7 +142,7 @@ public class ScheduleDataBase {
                 Log.e(TAG, "Error in onCreate");
             }
 
-            String CREATE_INDEX_SQL = "create index " + TABLE_NAME + "_IDX on "
+            /*String CREATE_INDEX_SQL = "create index " + TABLE_NAME + "_IDX on "
                     + TABLE_NAME + "(" + "CREATE_DATE" + ")";
 
             try {
@@ -150,7 +150,7 @@ public class ScheduleDataBase {
             } catch (Exception e) {
                 Log.e(TAG, "Exception in CREATE_INDEX_SQL", e);
             }
-
+            */
         }
 
         public Cursor getTodaySchedules(int year, int month, int day) {
