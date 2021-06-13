@@ -48,7 +48,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
     private TimePicker sTimePicker, eTimePicker;
     private EditText subTv, memoTv, addressTv;
     private String subText, memoText, addressText, date, sDate, eDate, title;
-    private int sHour, sMin, eHour, eMin, year, month, day, time;
+    private int sHour, sMin, eHour, eMin, year, month, day, time, _id;
     private Geocoder geocoder;
     private List<Address> addressList = null;
     private GoogleMap mMap;
@@ -56,7 +56,6 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
     private Context context;
     private ScheduleDataBase scheduleDataBase;
     ScheduleDataBase mDb;
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -71,6 +70,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         month = intent.getIntExtra("month", -1);
         day = intent.getIntExtra("date", -1);
         time=intent.getIntExtra("time", -1);
+        _id=intent.getIntExtra("_id", -1);
         Log.d(TAG, year + ", " + month + ", " + day);
 
 
@@ -89,11 +89,11 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
         title=String.valueOf(subTv.getText());
 
-        loadData();
 
         scheduleDataBase= new ScheduleDataBase(WriteActivity.this);
         mDb = scheduleDataBase.getInstance(WriteActivity.this);
 
+        loadData();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
 
@@ -158,10 +158,6 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 findAddress();
             }
         });
-
-
-
-
     }
 
     public void findAddress(){//지도 찾기 함수
@@ -328,38 +324,40 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void loadData(){
-        mDb = ScheduleDataBase.getInstance(this);
-
+        if(_id!=-1){
         String sql = "SELECT * FROM " +
                 TABLE_NAME +
-                " WHERE " + KEY_YEAR + "=" + year + ","
-                + KEY_MONTH + "=" + month + ","
-                + KEY_DAY + "=" + day;
-        int i=0;
-        if(mDb != null){
-            Cursor cursor = mDb.rawQuery(sql);
-            do{
-                cursor.moveToNext();
-            }while(i<11);
+                " WHERE id=" + _id;
 
-            String getYear = cursor.getString(1);
-            String getMonth = cursor.getString(2);
-            String getDay = cursor.getString(3);
-            String getTitle = cursor.getString(4);
-            String getSHour = cursor.getString(5);
-            String getSMin = cursor.getString(6);
-            String getEHour = cursor.getString(7);
-            String getEMin = cursor.getString(8);
-            String getPlace = cursor.getString(9);
-            String getMemo = cursor.getString(10);
+        if(mDb != null) {
+            Cursor outCursor = mDb.rawQuery(sql);
+            do {
+                outCursor.moveToNext();
+            } while (_id != outCursor.getInt(0));
+
+            String getYear = outCursor.getString(1);
+            String getMonth = outCursor.getString(2);
+            String getDay = outCursor.getString(3);
+            String getTitle = outCursor.getString(4);
+            String getSHour = outCursor.getString(5);
+            String getSMin = outCursor.getString(6);
+            String getEHour = outCursor.getString(7);
+            String getEMin = outCursor.getString(8);
+            String getPlace = outCursor.getString(9);
+            String getMemo = outCursor.getString(10);
 
             subTv.setText(getTitle);
-            //sHour.sTimePicker.setHour();
+            sTimePicker.setHour(Integer.parseInt(getSHour));
+            sTimePicker.setMinute(Integer.parseInt(getSMin));
+            eTimePicker.setHour(Integer.parseInt(getEHour));
+            eTimePicker.setMinute(Integer.parseInt(getEMin));
             addressTv.setText(getPlace);
             memoTv.setText(getMemo);
 
-            cursor.close();
+            outCursor.close();
+        }
 
         }
 
