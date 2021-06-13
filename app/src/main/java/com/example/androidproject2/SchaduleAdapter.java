@@ -16,28 +16,28 @@ public class SchaduleAdapter extends BaseAdapter {
 
     private final Context mContext;
     private LayoutInflater inflater;
-    private String title;
+    private ArrayList < String > title;
     private View view;
 
-    public SchaduleAdapter(Context context, String title) {
+    public SchaduleAdapter(Context context, ArrayList < String > title) {
         this.mContext = context;
         this.title = title;
         inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public int getCount() {
-        return 0;
+    public int getCount () {
+        return title.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public Object getItem ( int position){
+        return title.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -47,8 +47,8 @@ public class SchaduleAdapter extends BaseAdapter {
             this.view = view;
         }
 
-        TextView scheduleTv = view.findViewById(R.id.text2);
-        scheduleTv.setText("hi");
+        TextView scheduleTv = view.findViewById(R.id.text);
+        scheduleTv.setText(title.get(position));
         scheduleTv.setBackgroundColor(Color.CYAN);
 
         return view;

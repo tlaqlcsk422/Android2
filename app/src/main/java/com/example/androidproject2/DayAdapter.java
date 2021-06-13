@@ -17,6 +17,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static com.example.androidproject2.ScheduleDataBase.KEY_DAY;
+import static com.example.androidproject2.ScheduleDataBase.KEY_MONTH;
+import static com.example.androidproject2.ScheduleDataBase.KEY_TITLE;
+import static com.example.androidproject2.ScheduleDataBase.KEY_YEAR;
+import static com.example.androidproject2.ScheduleDataBase.TABLE_NAME;
+
 public class DayAdapter extends BaseAdapter implements OnItemClickListener{
 
         private static final String TAG="grid Adapter View";
@@ -24,11 +30,14 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
         private final Context mContext;
         private LayoutInflater inflater;
         private ArrayList<Integer> items = new ArrayList<Integer>();//일(1~31)을 저장할 벡터
+        private ArrayList<String> title = new ArrayList<>();
         private View view;
         private int year,month, day;
         private int height,width;//화면의 높이, 너비
         TextView tempView;
         OnItemClickListener listener;
+        private ScheduleDataBase scheduleDataBase;
+        ScheduleDataBase mDb;
 
 
     public DayAdapter(Context context, ArrayList < Integer > items, int year, int month, int height, int width) {
@@ -131,9 +140,13 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
             }
         });
 
+        loadTitle();
 
 
-        //SchaduleAdapter adapter = new SchaduleAdapter(mContext, "hi");
+        SchaduleAdapter adapter = new SchaduleAdapter(mContext, title);
+        // 어탭터 연결
+        ListView listView = (ListView) view.findViewById(R.id.list_item);
+        listView.setAdapter(adapter);
 
         return view;
     }
@@ -144,21 +157,34 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
     void print(String message){
         Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show();
     }
-/*
-    private void viewAllRecord(){
-        Cursor cursor = mDbHelper.getAllSchedules(year, month, day);
 
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(mContext.getApplicationContext(),
-                R.layout.text_item, cursor, new String[]{
-                Schedule.Schedules.KEY_TITLE},
-                new int[]{R.id.text2}, 0);
+    private void loadTitle() {
+        String sql = "SELECT id " + KEY_TITLE + " FROM " +
+                TABLE_NAME +
+                " WHERE " + KEY_YEAR + "=" + year + "," + KEY_MONTH + "=" + month + "," +
+                KEY_DAY + "=" + day;
+        int recordCount = -1;
+        ScheduleDataBase database = ScheduleDataBase.getInstance(mContext);
 
-        // 어탭터 연결
-        ListView listView = (ListView) view.findViewById(R.id.list_item);
-        listView.setAdapter(adapter);
+
+        if (database != null) {
+            Cursor outCursor = database.rawQuery(sql);
+            for (int i = 0; i < recordCount; i++) {
+                outCursor.moveToNext();
+
+                int _id = outCursor.getInt(0);
+                String getTitle = outCursor.getString(1);
+
+                title.add(getTitle);
+
+                Log.d(TAG, "#" + i + " -> " + _id + ", " + getTitle);
+            }
+            outCursor.close();
+
+        }
+
     }
 
- */
 
 
 }   
