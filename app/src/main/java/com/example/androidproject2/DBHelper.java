@@ -29,7 +29,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }catch (Exception e){
             Log.e(TAG, "Error in onCreate");
         }
-
     }
 
     @Override
@@ -38,10 +37,16 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertSchedule(int year, int month, int day, String title,
+    public void insertSchedule(String sql)
+            /*(int year, int month, int day, String title,
                                int sHour, int sMin, int eHour, int eMin,
-                               String place, String memo){
+                               String place, String memo)
+
+             */
+                               {
+
         try{
+            /*
             String sql = String.format(
                     "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s %s) VALUES(%d,%d,%d,'%s',%d,%d,%d,%d,'%s','%s')",
                     TABLE_NAME,
@@ -57,6 +62,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     Schedule.Schedules.KEY_MEMO,
                     year, month, day, title, sHour, sMin, eHour, eMin, place, memo);
 
+
+             */
             getWritableDatabase().execSQL(sql);
         }catch (SQLException e){
             Log.e(TAG, "Error in inserting recodes");
@@ -67,6 +74,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                int sHour, int sMin, int eHour, int eMin,
                                String place, String memo){
         try {
+
             String sql = String.format(
                     "UPDATE %s SET %s = '%s', %s = %d, %s = %d, %s = %d, %s = %d, %s = '%s', %s ='%s' WHERE %s = %d AND %s = %d AND %s = %d",
                     TABLE_NAME,
@@ -113,6 +121,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public long insert(int year, int month, int day, String title,
     int sHour, int sMin, int eHour, int eMin,
     String place, String memo){
+
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Schedule.Schedules.KEY_YEAR,year);

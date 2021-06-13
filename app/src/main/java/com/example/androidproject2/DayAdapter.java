@@ -108,7 +108,7 @@ public class DayAdapter extends BaseAdapter implements OnItemClickListener{
                 dayTv.setTextColor(Color.BLUE);
 
         }
-        Log.d(TAG, items.get(position) + ", "+dayTv.getText());
+        //Log.d(TAG, items.get(position) + ", "+dayTv.getText());
 
         dayTv.setOnClickListener(new View.OnClickListener() {
             @Override

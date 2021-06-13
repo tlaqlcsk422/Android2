@@ -33,6 +33,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 
+import static com.example.androidproject2.Schedule.Schedules.TABLE_NAME;
+
 public class WriteActivity extends AppCompatActivity implements OnMapReadyCallback {
     private Button saveBtn, delBtn, escBtn, findBtn;
     private TimePicker sTimePicker, eTimePicker;
@@ -92,7 +94,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                insertRecord();
+                save();
                 //나가기
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -275,12 +277,37 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
                 Schedule.Schedules.KEY_TITLE},
                 new int[]{R.id.text2}, 0);
 
-
         ListView lv = (ListView)findViewById(R.id.list_item);
         lv.setAdapter(adapter);
 
     }
 
+    private void save(){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){//시간 받기
+            sHour=sTimePicker.getHour();
+            sMin=sTimePicker.getMinute();
+            eHour=eTimePicker.getHour();
+            eMin=eTimePicker.getMinute();
+        }
+        else{
+            sHour=sTimePicker.getCurrentHour();
+            sMin=sTimePicker.getCurrentMinute();
+            eHour=eTimePicker.getCurrentHour();
+            eMin=eTimePicker.getCurrentMinute();
+        }
+        subText= String.valueOf(subTv.getText());//제목 받기
+        addressText=String.valueOf(addressTv.getText());//주소 받기
+        memoText= String.valueOf(memoTv.getText());//메모 받기
+
+        String sql = "INSERT INTO "+Schedule.Schedules.TABLE_NAME+
+                "('year','month','day','title','sHour','sMin','eHour','eMin'," +
+                "'place','memo') values("+year +","+month+","+day+","+
+                "'"+subText+"',"+sHour+","+sMin+","+eHour+","+ eMin +"," +
+                "'"+addressText+"','"+memoText+"')";
+        Log.d(TAG,"sql : "+sql);
+
+        mDbHelper.insertSchedule(sql);
+    }
 
 
 }
